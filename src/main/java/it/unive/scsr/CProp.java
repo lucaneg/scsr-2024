@@ -20,67 +20,45 @@ import it.unive.lisa.util.representation.StringRepresentation;
 import it.unive.lisa.util.representation.StructuredRepresentation;
 
 public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CProp> {	
-	/**
-	 * The id and constant being defined
-	 */
+	//The id and constant being defined
 	private final Identifier id;
 	private final Constant constant;
-
-
+	// A Map is defined to map the couples identifier-constant
 	private Map<Identifier, Constant> constantVariableMap;
-
+	// Constructors
     public CProp() {
         this.constantVariableMap = new HashMap<>();
 		this.id = null;
 		this.constant = null;
     }
-    
-	/**
-	 * @param constant
-	 */
 	public CProp(Constant constant) {
         this.constantVariableMap = new HashMap<>();
 		this.id = null;
 		this.constant = constant;
 	}
-
-	/**
-	 * @param id
-	 */
 	public CProp(Identifier id) {
         this.constantVariableMap = new HashMap<>();
 		this.id = id;
 		this.constant = null;
 	}
-
-	/**
-	 * @param id and constant
-	 */
 	public CProp(Identifier id, Constant constant) {
         this.constantVariableMap = new HashMap<>();
 		this.id = id;
 		this.constant = constant;
 	}
-
-	/**
-	 * @get id 
-	 */
+	// Getters
 	public Identifier getId() {
 		return id;
 	}
-
-	/**
-	 * @get constant 
-	 */
 	public Constant getConstant() {
 		return constant;
 	}
-
+	// HashCode method 
 	@Override
 	public int hashCode() {
 		return Objects.hash(constant, id);
 	}
-
+	// Equals method
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -97,7 +75,6 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
 	public void assignConstant(Identifier id, Constant constant) {
 		constantVariableMap.put(id, constant);
 	}
-
     /*
      * @explain: with this method I get the values assigned to the variables
      */
@@ -105,10 +82,8 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
 		return constantVariableMap.values();
 	}
 	
-    
     //Point 2: Assignments to constant expressions (evaluate expressions containing constants and variables, and
 	// store the new constant-variable pair if the result is constant - support x+y, x-y, x*y, x/y, -x) [OK]
-	
 	// ASSUMPTION: There are just 2 numbers and 1 operator on each expression
 	public void assignConstant(String expression) {
 		int result = evaluateExpression(expression);
@@ -116,7 +91,6 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
 			System.out.println("OK" + evaluateExpression(expression));
 		}else System.out.println("Not OK");
 	}
-
     private int evaluateExpression(String expression) {
     	boolean trovato = false;
     	int i = 0;
@@ -147,7 +121,6 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
         }
     }
     
-    
     //Point 3: When a variable is assigned to a non-constant value, kill it
     @Override
     public Collection<Identifier> getInvolvedIdentifiers() {
@@ -155,7 +128,6 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
 		result.add(id);
 		return result;
 	}
-    
     @Override
     public Collection<CProp> kill(
 			Identifier id,
@@ -173,8 +145,6 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
 				killed.add(rd);
 		return killed;
 	}
-
-    
 	public Collection<CProp> kill(
 			ValueExpression expression,
 			ProgramPoint pp,
@@ -183,22 +153,18 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
 		// if no assignment is performed, no element is killed!
 		return new HashSet<>();
 	}
-
-	
 	@Override
 	public Collection<CProp> gen(Identifier id, ValueExpression expression, ProgramPoint pp,
 			PossibleDataflowDomain<CProp> domain) throws SemanticException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	@Override
 	public Collection<CProp> gen(ValueExpression expression, ProgramPoint pp, PossibleDataflowDomain<CProp> domain)
 			throws SemanticException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	// IMPLEMENTATION NOTE:
 	// the code below is outside of the scope of the course. You can uncomment
@@ -209,20 +175,17 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
 	// "id"/"constant". If you don't have these fields in your
 	// solution, then you should make sure that what you are doing is correct :)
 	
-	
 	public StructuredRepresentation representation() {
 		return new ListRepresentation(
 				new StringRepresentation(id), 
 				new StringRepresentation(constant));
 	}
-
 	@Override
 	public CProp pushScope(
 			ScopeToken scope)
 			throws SemanticException {
 		return this;
 	}
-
 	@Override
 	public CProp popScope(
 			ScopeToken scope)
