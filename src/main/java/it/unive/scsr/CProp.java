@@ -95,15 +95,15 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
 
 	//Point 1: Assignments to constants (store the constant-variable pair) [OK]
 	public void assignConstant(Identifier id, Constant constant) {
-        constantVariableMap.put(id, constant);
-    }
+		constantVariableMap.put(id, constant);
+	}
 
     /*
      * @explain: with this method I get the values assigned to the variables
      */
 	public Collection<Constant> getVariablesAssignedToConstants() {
-        return constantVariableMap.values();
-    }
+		return constantVariableMap.values();
+	}
 	
     
     //Point 2: Assignments to constant expressions (evaluate expressions containing constants and variables, and
@@ -111,11 +111,11 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
 	
 	// ASSUMPTION: There are just 2 numbers and 1 operator on each expression
 	public void assignConstant(String expression) {
-    	int result = evaluateExpression(expression);
-        if (result != Integer.MIN_VALUE) {
-            System.out.println("OK" + evaluateExpression(expression));
-        }else System.out.println("Not OK");
-    }
+		int result = evaluateExpression(expression);
+		if (result != Integer.MIN_VALUE) {
+			System.out.println("OK" + evaluateExpression(expression));
+		}else System.out.println("Not OK");
+	}
 
     private int evaluateExpression(String expression) {
     	boolean trovato = false;
