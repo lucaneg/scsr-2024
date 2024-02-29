@@ -7,6 +7,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
+import com.ibm.icu.math.BigDecimal;
+
 import it.unive.lisa.analysis.ScopeToken;
 import it.unive.lisa.analysis.SemanticException;
 import it.unive.lisa.analysis.dataflow.DataflowElement;
@@ -85,7 +91,7 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
     //Point 2: Assignments to constant expressions (evaluate expressions containing constants and variables, and
 	// store the new constant-variable pair if the result is constant - support x+y, x-y, x*y, x/y, -x) [OK]
 	// ASSUMPTION: There are just 2 numbers and 1 operator on each expression
-	public void assignConstant(String expression) {
+	/*public void assignConstant(String expression) {
 		int result = evaluateExpression(expression);
 		if (result != Integer.MIN_VALUE) {
 			System.out.println("OK" + evaluateExpression(expression));
@@ -119,6 +125,96 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
             // If expression cannot be parsed directly as integer, it's not a constant
             return Integer.MIN_VALUE;
         }
+    }*/
+	
+	/*public void assignConstant(String expression) {
+        try {
+            int result = evaluateExpression(expression);
+            if (result != Integer.MIN_VALUE) {
+                System.out.println("OK   " + result);
+            } else {
+                System.out.println("Not OK");
+            }
+        } catch (Exception e) { System.out.println("Not OK"); }
+    }
+
+    private int evaluateExpression(String expression) throws ScriptException{
+        try{
+            ScriptEngineManager manager = new ScriptEngineManager();
+            ScriptEngine engine = manager.getEngineByName("JavaScript");
+            Object result = engine.eval(expression);
+            if (result instanceof Number) {
+                return ((Number) result).intValue();
+            } else {
+                return Integer.MIN_VALUE; // Return MIN_VALUE if the result is not a number
+            }
+        }  catch (NumberFormatException e) {
+            // If expression cannot be parsed directly as integer, it's not a constant
+            return Integer.MIN_VALUE;
+        }
+    }*/
+	
+	// ASSUMPTION: OPERATIONS ARE NOT ORDERED
+	public static BigDecimal eval(final String str) {
+        return new Object() {
+            int pos = -1, ch;
+
+            void nextChar() {
+                ch = (++pos < str.length()) ? str.charAt(pos) : -1;
+            }
+
+            boolean eat(int charToEat) {
+                while (ch == ' ') nextChar();
+                if (ch == charToEat) {
+                    nextChar();
+                    return true;
+                }
+                return false;
+            }
+
+            BigDecimal parse() {
+                nextChar();
+                BigDecimal x = parseExpression();
+                if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char)ch);
+                return x;
+            }
+
+            BigDecimal parseExpression() {
+                BigDecimal x = parseTerm();
+                for (;;) {
+                    if (eat('+')) x = x.add(parseTerm()); // addition
+                    else if (eat('-')) x = x.subtract(parseTerm()); // subtraction
+                    else return x;
+                }
+            }
+
+            BigDecimal parseTerm() {
+                BigDecimal x = parseFactor();
+                for (;;) {
+                    if (eat('*')) x = x.multiply(parseFactor()); // multiplication
+                    else if (eat('/')) x = x.divide(parseFactor()); // division
+                    else return x;
+                }
+            }
+
+            BigDecimal parseFactor() {
+                if (eat('+')) return parseFactor(); // unary plus
+                if (eat('-')) return parseFactor().negate(); // unary minus
+
+                BigDecimal x;
+                int startPos = this.pos;
+                if (eat('(')) { // parentheses
+                    x = parseExpression();
+                    if (!eat(')')) throw new RuntimeException("Missing ')'");
+                } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
+                    while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
+                    x = new BigDecimal(str.substring(startPos, this.pos));
+                } else {
+                    throw new RuntimeException("Unexpected: " + (char)ch);
+                }
+                return x;
+            }
+        }.parse();
     }
     
     //Point 3: When a variable is assigned to a non-constant value, kill it

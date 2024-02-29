@@ -12,18 +12,18 @@ import it.unive.lisa.imp.IMPFrontend;
 import it.unive.lisa.imp.ParsingException;
 import it.unive.lisa.program.Program;
 
-public class CPropsTest {
+public class CPropTest {
 
 	@Test
 	public void testRD() throws ParsingException, AnalysisException {
 		// we parse the program to get the CFG representation of the code in it
-		Program program = IMPFrontend.processFile("inputs/available-expressions.imp");
+		Program program = IMPFrontend.processFile("inputs/cprop.imp");
 
 		// we build a new configuration for the analysis
 		LiSAConfiguration conf = new DefaultConfiguration();
 
 		// we specify where we want files to be generated
-		conf.workdir = "outputs/ae";
+		conf.workdir = "outputs/cp";
 
 		// we specify the visual format of the analysis results
 		conf.analysisGraphs = GraphType.HTML;
@@ -33,7 +33,7 @@ public class CPropsTest {
 				// memory handling
 				DefaultConfiguration.defaultHeapDomain(),
 				// domain
-				new DefiniteDataflowDomain<>(new AvailableExpressions()),
+				new DefiniteDataflowDomain<>(new CProp()),
 				// how we compute types of expressions
 				DefaultConfiguration.defaultTypeDomain());
 
