@@ -128,7 +128,7 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
         			int n2 = Integer.parseInt(expression.substring(i+1,expression.length()));
         			if(expression.charAt(i)=='+') result = n1+n2;
         			else if(expression.charAt(i)=='-') result = n1-n2;
-        			else if(expression.charAt(i)=='*') result = n1*n2;
+        			else if(expression.charAt(i)=='*') result  = n1*n2;
         			else if(expression.charAt(i)=='/') result = n1/n2;
         			trovato = true;
         			return result;
