@@ -154,7 +154,7 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
         }
     }*/
 	
-	// ASSUMPTION: OPERATIONS ARE NOT ORDERED
+	// 2+5*2 -> 12
 	public static BigDecimal eval(final String str) {
         return new Object() {
             int pos = -1, ch;
