@@ -1,34 +1,151 @@
 package it.unive.scsr;
 
-public class CProp {
+import it.unive.lisa.analysis.ScopeToken;
+import it.unive.lisa.analysis.SemanticException;
+import it.unive.lisa.analysis.dataflow.ConstantPropagation;
+import it.unive.lisa.analysis.dataflow.DataflowElement;
+import it.unive.lisa.analysis.dataflow.DefiniteDataflowDomain;
+import it.unive.lisa.program.cfg.ProgramPoint;
+import it.unive.lisa.symbolic.SymbolicExpression;
+import it.unive.lisa.symbolic.value.*;
+import it.unive.lisa.symbolic.value.operator.AdditionOperator;
+import it.unive.lisa.symbolic.value.operator.DivisionOperator;
+import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
+import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
+import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
+import it.unive.lisa.util.representation.ListRepresentation;
+import it.unive.lisa.util.representation.StringRepresentation;
+import it.unive.lisa.util.representation.StructuredRepresentation;
+import org.antlr.v4.codegen.target.CppTarget;
 
-	// IMPLEMENTATION NOTE:
-	// the code below is outside of the scope of the course. You can uncomment
-	// it to get your code to compile. Be aware that the code is written
-	// expecting that a field named "id" and a field named "constant" exist
-	// in this class: if you name them differently, change also the code below
-	// to make it work by just using the name of your choice instead of
-	// "id"/"constant". If you don't have these fields in your
-	// solution, then you should make sure that what you are doing is correct :)
+import java.util.*;
 
-//	@Override
-//	public StructuredRepresentation representation() {
-//		return new ListRepresentation(
-//				new StringRepresentation(id), 
-//				new StringRepresentation(constant));
-//	}
-//
-//	@Override
-//	public CProp pushScope(
-//			ScopeToken scope)
-//			throws SemanticException {
-//		return this;
-//	}
-//
-//	@Override
-//	public CProp popScope(
-//			ScopeToken scope)
-//			throws SemanticException {
-//		return this;
-//	}
+public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CProp> {
+
+    private final Identifier id;
+    private final Integer constant;
+
+    public CProp(Identifier id, Integer constant) {
+        this.id = id;
+        this.constant = constant;
+    }
+
+    public CProp() {
+        this(null, null);
+    }
+
+    @Override
+    public boolean equals(Object rhs) {
+        if (this == rhs) return true;
+        if (this == null || rhs == null) return false;
+        if (rhs.getClass() != CProp.class) return false;
+        CProp crhs = (CProp) rhs;
+        return Objects.equals(this.id, crhs.id) && Objects.equals(this.constant, crhs.constant);
+    }
+
+
+    //if the expression does not contain a constant it returns null
+    private static Integer getValues(SymbolicExpression expression, DefiniteDataflowDomain<CProp> domain) {
+        Integer result = null;
+        if (expression instanceof Constant) {
+            Constant c = (Constant) expression;
+            if (c.getValue() instanceof Integer) {
+                result = (Integer) c.getValue();
+            }
+        }
+
+        if (expression instanceof Identifier) {
+            Identifier id = (Identifier) expression;
+            for (CProp cp : domain.getDataflowElements()) {
+                if (cp.id.equals(id)) result = cp.constant;
+            }
+        }
+
+        if (expression instanceof UnaryExpression) {
+            UnaryExpression u = (UnaryExpression) expression;
+            result = getValues(u.getExpression(), domain);
+
+        }
+
+        if (expression instanceof BinaryExpression) {
+            BinaryExpression bi = (BinaryExpression) expression;
+            Integer n1 = (Integer) getValues(bi.getLeft(), domain);
+            Integer n2 = (Integer) getValues(bi.getRight(), domain);
+            BinaryOperator biOp =  bi.getOperator();
+
+            if (biOp instanceof AdditionOperator) result = n1 + n2;
+            if (biOp instanceof SubtractionOperator) result = n1 - n2;
+            if (biOp instanceof MultiplicationOperator) result = n1 * n2;
+            if (biOp instanceof DivisionOperator) result = n1 / n2;
+
+        }
+
+
+        return result;
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, constant);
+    }
+
+	@Override
+	public StructuredRepresentation representation() {
+		return new ListRepresentation(
+				new StringRepresentation(id),
+				new StringRepresentation(constant));
+	}
+
+	@Override
+	public CProp pushScope(
+			ScopeToken scope)
+			throws SemanticException {
+		return this;
+	}
+
+	@Override
+	public CProp popScope(
+			ScopeToken scope)
+			throws SemanticException {
+		return this;
+	}
+
+    @Override
+    public Collection<Identifier> getInvolvedIdentifiers() {
+        return Collections.singleton(this.id);
+    }
+
+    @Override
+    public Collection<CProp> gen(Identifier id, ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain) throws SemanticException {
+        Set<CProp> result = new HashSet<>();
+        Integer c = getValues(expression, domain);
+
+        result.add(new CProp(id, c));
+
+        return result;
+
+    }
+
+    //since there is no assignment, no constant is created
+    @Override
+    public Collection<CProp> gen(ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain) throws SemanticException {
+        return new HashSet<>();
+    }
+
+    @Override
+    public Collection<CProp> kill(Identifier id, ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain) throws SemanticException {
+        Integer c = getValues(expression, domain);
+        //how to kill a identifier if it is assigned to a non constant value if we don't know it's value? bho
+        Set<CProp> killed = new HashSet<>();
+
+
+
+        return killed;
+    }
+
+    //since there is no assignment, no variable is gonna be killed
+    @Override
+    public Collection<CProp> kill(ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain) throws SemanticException {
+        return new HashSet<>();
+    }
+
 }
