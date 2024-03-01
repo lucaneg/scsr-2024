@@ -5,25 +5,25 @@ import org.junit.Test;
 import it.unive.lisa.AnalysisException;
 import it.unive.lisa.DefaultConfiguration;
 import it.unive.lisa.LiSA;
-import it.unive.lisa.analysis.dataflow.PossibleDataflowDomain;
+import it.unive.lisa.analysis.dataflow.DefiniteDataflowDomain;
 import it.unive.lisa.conf.LiSAConfiguration;
 import it.unive.lisa.conf.LiSAConfiguration.GraphType;
 import it.unive.lisa.imp.IMPFrontend;
 import it.unive.lisa.imp.ParsingException;
 import it.unive.lisa.program.Program;
 
-public class ReachingDefinitionsTest {
+public class AvailableExpressionsTest {
 
 	@Test
 	public void testRD() throws ParsingException, AnalysisException {
 		// we parse the program to get the CFG representation of the code in it
-		Program program = IMPFrontend.processFile("inputs/reaching-definitions.imp");
+		Program program = IMPFrontend.processFile("inputs/available-expressions.imp");
 
 		// we build a new configuration for the analysis
 		LiSAConfiguration conf = new DefaultConfiguration();
 
 		// we specify where we want files to be generated
-		conf.workdir = "outputs/rd";
+		conf.workdir = "outputs/ae";
 
 		// we specify the visual format of the analysis results
 		conf.analysisGraphs = GraphType.HTML;
@@ -33,7 +33,7 @@ public class ReachingDefinitionsTest {
 				// memory handling
 				DefaultConfiguration.defaultHeapDomain(),
 				// domain
-				new PossibleDataflowDomain<>(new ReachingDefinitions()),
+				new DefiniteDataflowDomain<>(new AvailableExpressions()),
 				// how we compute types of expressions
 				DefaultConfiguration.defaultTypeDomain());
 
