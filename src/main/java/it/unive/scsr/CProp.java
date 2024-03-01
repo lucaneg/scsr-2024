@@ -1,8 +1,19 @@
 package it.unive.scsr;
 
+import it.unive.lisa.symbolic.value.Constant;
+import it.unive.lisa.symbolic.value.Identifier;
+
 public class CProp {
 
-	// IMPLEMENTATION NOTE:
+    private final Identifier id;
+    private final Constant constant;
+
+    public CProp(Identifier id, Constant constant) {
+        this.id = id;
+        this.constant = constant;
+    }
+
+    // IMPLEMENTATION NOTE:
 	// the code below is outside of the scope of the course. You can uncomment
 	// it to get your code to compile. Be aware that the code is written
 	// expecting that a field named "id" and a field named "constant" exist
