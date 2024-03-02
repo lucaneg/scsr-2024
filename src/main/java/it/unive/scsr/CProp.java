@@ -7,10 +7,18 @@ import it.unive.lisa.analysis.SemanticException;
 import it.unive.lisa.analysis.dataflow.DataflowElement;
 import it.unive.lisa.analysis.dataflow.DefiniteDataflowDomain;
 import it.unive.lisa.program.cfg.ProgramPoint;
+import it.unive.lisa.symbolic.value.BinaryExpression;
+import it.unive.lisa.symbolic.value.UnaryExpression;
 import it.unive.lisa.symbolic.SymbolicExpression;
 import it.unive.lisa.symbolic.value.Constant;
 import it.unive.lisa.symbolic.value.Identifier;
 import it.unive.lisa.symbolic.value.ValueExpression;
+import it.unive.lisa.symbolic.value.operator.AdditionOperator;
+import it.unive.lisa.symbolic.value.operator.DivisionOperator;
+import it.unive.lisa.symbolic.value.operator.ModuloOperator;
+import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
+import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
+import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
 import it.unive.lisa.util.representation.StructuredRepresentation;
 import it.unive.lisa.util.representation.ListRepresentation;
 import it.unive.lisa.util.representation.StringRepresentation;
@@ -38,15 +46,54 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 		this(null, null);
 	}
 
-	// TODO: Finish to implement this function for other cases
 	private Integer getValue(SymbolicExpression expression, DefiniteDataflowDomain<CProp> domain) {
-		Constant c = (Constant) expression;
+		Integer value;
+
+		if (expression instanceof Constant) {
+			Constant c = (Constant) expression;
 			
-		if (c.getValue() instanceof Integer) {
-			return (Integer) c.getValue();
+			if (c.getValue() instanceof Integer) {
+				value = (Integer) c.getValue();
+			}
+
+		} else if (expression instanceof Identifier) {
+			Identifier id = (Identifier) expression;
+
+			for (CProp cp : domain.getDataflowElements()) {
+				if (cp.id.equals(id)) {
+					value = cp.constant;
+				}
+			}
+
+		} else if (expression instanceof UnaryExpression) {
+			UnaryExpression ue = (UnaryExpression) expression;
+			value = getValue(ue.getExpression(), domain);
+
+		} else if (expression instanceof BinaryExpression) {
+			BinaryExpression be = (BinaryExpression) expression;
+			BinaryOperator op = be.getOperator();
+			Integer left = getValue(be.getLeft(), domain);
+			Integer right = getValue(be.getRight(), domain);
+
+			if (left == null || right == null) {
+				value = null;
+			} else if (op instanceof AdditionOperator) {
+				value = left + right;
+			} else if (op instanceof SubtractionOperator) {
+				value = left - right;
+			} else if (op instanceof MultiplicationOperator) {
+				value = left * right;
+			} else if (op instanceof DivisionOperator) {
+				value = left / right;	// No need to cast to Integer i guess (?)
+			} else if (op instanceof ModuloOperator) {
+				value = left % right;
+			}
+
+		} else {
+			value = null;
 		}
 
-		return null;
+		return value;
 	}
 
 	@Override
