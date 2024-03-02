@@ -24,14 +24,6 @@ import it.unive.lisa.util.representation.ListRepresentation;
 import it.unive.lisa.util.representation.StringRepresentation;
 
 
-// IMPLEMENTATION NOTE:
-// the code below is outside of the scope of the course. You can uncomment
-// it to get your code to compile. Be aware that the code is written
-// expecting that a field named "id" and a field named "constant" exist
-// in this class: if you name them differently, change also the code below
-// to make it work by just using the name of your choice instead of
-// "id"/"constant". If you don't have these fields in your
-// solution, then you should make sure that what you are doing is correct :)
 public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CProp> {
 
 	private final Identifier id;
@@ -47,7 +39,7 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 	}
 
 	private Integer getValue(SymbolicExpression expression, DefiniteDataflowDomain<CProp> domain) {
-		Integer value;
+		Integer value = null;
 
 		if (expression instanceof Constant) {
 			Constant c = (Constant) expression;
@@ -62,6 +54,7 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 			for (CProp cp : domain.getDataflowElements()) {
 				if (cp.id.equals(id)) {
 					value = cp.constant;
+					break;
 				}
 			}
 
@@ -84,13 +77,10 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 			} else if (op instanceof MultiplicationOperator) {
 				value = left * right;
 			} else if (op instanceof DivisionOperator) {
-				value = left / right;	// No need to cast to Integer i guess (?)
+				value = left / right;
 			} else if (op instanceof ModuloOperator) {
 				value = left % right;
 			}
-
-		} else {
-			value = null;
 		}
 
 		return value;
@@ -103,7 +93,7 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 	
 	@Override
 	public Collection<CProp> kill(Identifier id, ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain) throws SemanticException {
-		Set<CProp> result = new HashSet<>();
+		Collection<CProp> result = new HashSet<>();
     
 		for (CProp cp : domain.getDataflowElements()) {
 			if (cp.id.equals(id)) result.add(cp);
@@ -114,7 +104,13 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 
 	@Override
 	public Collection<CProp> gen(Identifier id, ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain) throws SemanticException {
-		return new HashSet<>(Collections.singleton(new CProp(id, getValue(expression, domain))));
+		Integer value = getValue(expression, domain);
+
+		if (value != null) {
+			return new HashSet<>(Collections.singleton(new CProp(id, value)));
+		} else {
+			return new HashSet<>();
+		}
 	}
 
 	@Override
@@ -140,8 +136,7 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 
 		CProp other = (CProp) obj;
 
-		if (!Objects.equals(this.id, other.id) || !Objects.equals(this.constant, other.constant)) return false;
-		return true;
+		return (!Objects.equals(this.id, other.id) || !Objects.equals(this.constant, other.constant));
 	}
 
 	@Override
