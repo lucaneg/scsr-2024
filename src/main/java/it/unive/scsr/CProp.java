@@ -7,17 +7,10 @@ import it.unive.lisa.analysis.SemanticException;
 import it.unive.lisa.analysis.dataflow.DataflowElement;
 import it.unive.lisa.analysis.dataflow.DefiniteDataflowDomain;
 import it.unive.lisa.program.cfg.ProgramPoint;
-import it.unive.lisa.symbolic.value.BinaryExpression;
-import it.unive.lisa.symbolic.value.UnaryExpression;
 import it.unive.lisa.symbolic.SymbolicExpression;
 import it.unive.lisa.symbolic.value.Constant;
 import it.unive.lisa.symbolic.value.Identifier;
 import it.unive.lisa.symbolic.value.ValueExpression;
-import it.unive.lisa.symbolic.value.operator.AdditionOperator;
-import it.unive.lisa.symbolic.value.operator.DivisionOperator;
-import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
-import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
-import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
 import it.unive.lisa.util.representation.StructuredRepresentation;
 import it.unive.lisa.util.representation.ListRepresentation;
 import it.unive.lisa.util.representation.StringRepresentation;
@@ -45,8 +38,16 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 		this(null, null);
 	}
 
-	
+	// TODO: Finish to implement this function for other cases
+	private Integer getValue(SymbolicExpression expression, DefiniteDataflowDomain<CProp> domain) {
+		Constant c = (Constant) expression;
+			
+		if (c.getValue() instanceof Integer) {
+			return (Integer) c.getValue();
+		}
 
+		return null;
+	}
 
 	@Override
 	public Collection<Identifier> getInvolvedIdentifiers() {
@@ -55,14 +56,18 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 	
 	@Override
 	public Collection<CProp> kill(Identifier id, ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain) throws SemanticException {
-		// TODO
-		return null;
+		Set<CProp> result = new HashSet<>();
+    
+		for (CProp cp : domain.getDataflowElements()) {
+			if (cp.id.equals(id)) result.add(cp);
+		}
+		
+		return result;
 	}
 
 	@Override
 	public Collection<CProp> gen(Identifier id, ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain) throws SemanticException {
-		// TODO
-		return null;
+		return new HashSet<>(Collections.singleton(new CProp(id, getValue(expression, domain))));
 	}
 
 	@Override
