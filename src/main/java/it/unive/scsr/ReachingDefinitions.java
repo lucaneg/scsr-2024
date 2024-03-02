@@ -102,6 +102,7 @@ public class ReachingDefinitions
 			PossibleDataflowDomain<ReachingDefinitions> domain)
 			throws SemanticException {
 		// we generate a new element tracking this definition
+		System.out.println("Generating " + id.toString() + " posizione " + pp.getLocation().toString());
 		Set<ReachingDefinitions> result = new HashSet<>();
 		ReachingDefinitions rd = new ReachingDefinitions(id, pp.getLocation());
 		result.add(rd);
@@ -127,6 +128,7 @@ public class ReachingDefinitions
 			throws SemanticException {
 		// we kill all of the elements that refer to the variable being
 		// assigned, as we are redefining the variable
+		System.out.println("Killing " + id.toString() + " posizione " + pp.getLocation().toString());
 		Set<ReachingDefinitions> killed = new HashSet<>();
 		for (ReachingDefinitions rd : domain.getDataflowElements())
 			// we could use `rd.variable.equals(id)` as elements of this class

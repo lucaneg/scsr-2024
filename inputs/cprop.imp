@@ -5,6 +5,8 @@ class cp {
 		def z = x * y;
 		def d = 5 + 7;
 		def w = x + y;
+        def xx = d/x;
+
 
 		return;
 	}
@@ -17,13 +19,13 @@ class cp {
 		def n = 7 * 3;
 		def a = xy + y;
 		
-		if (xy == 0) { 
-			xy = z;
-			b = xy + y;
+		if (true) {
+			xy = 15;
 		} else {
-			xy = 1;
-			b = xy + y;
+		    xy = 66;
 		}
+
+
 		
 		return;
 	}
