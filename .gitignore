@@ -229,3 +229,6 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,eclipse,intellij
 
 /outputs/
+
+# Exclude vscode settings
+.vscode/
