@@ -73,16 +73,25 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 
 			if (left == null || right == null) {
 				value = null;
+
 			} else if (op instanceof AdditionOperator) {
 				value = left + right;
+
 			} else if (op instanceof SubtractionOperator) {
 				value = left - right;
+
 			} else if (op instanceof MultiplicationOperator) {
 				value = left * right;
+
 			} else if (op instanceof DivisionOperator) {
-				value = left / right;
+				try {
+					value = left / right;
+				} catch (ArithmeticException ae) {}		// value is still null
+
 			} else if (op instanceof ModuloOperator) {
-				value = left % right;
+				try {
+					value = left % right;
+				} catch (ArithmeticException ae) {}		// value is still null
 			}
 		}
 
@@ -127,6 +136,11 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 	}
 
 	@Override
+	public String toString() {
+		return representation().toString();
+	}
+
+	@Override
 	public int hashCode() {
 		return Objects.hash(id, constant);
 	}
@@ -139,7 +153,7 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 
 		CProp other = (CProp) obj;
 
-		return (!Objects.equals(this.id, other.id) || !Objects.equals(this.constant, other.constant));
+		return (Objects.equals(this.id, other.id) && Objects.equals(this.constant, other.constant));
 	}
 
 	@Override
