@@ -27,4 +27,37 @@ class cp {
 		
 		return;
 	}
+
+	f2() {
+		def x = 3;
+		def y = 0;
+		def a = 10 + 3 * 6;
+		def b = x + y;
+		def c = 0;
+
+		y = x / y;
+		
+		if (b < 3) { 
+			c = b + a;
+		} else {
+			c = b - a;
+		}
+
+		def d = c;
+		
+		return;
+	}
+
+	f3(x) {
+		if (x % 2 == 0){
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	f4() {
+		def x = 0;
+		def y = this.f3(x);
+	}
 }
