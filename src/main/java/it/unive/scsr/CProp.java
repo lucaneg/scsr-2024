@@ -46,8 +46,8 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 		return set;
 	}
 
-	private static int evaluate(SymbolicExpression e, DefiniteDataflowDomain<CProp> domain) {
-		int res = -1;
+	private static Integer evaluate(SymbolicExpression e, DefiniteDataflowDomain<CProp> domain) {
+		Integer res = null;
 		if (e instanceof Constant) {
 			Constant c = (Constant) e;
 			res = c.getValue() instanceof Integer ? (Integer) c.getValue() : res;
@@ -65,16 +65,16 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 			}
 		} else if (e instanceof BinaryExpression) {
 			BinaryExpression binary = (BinaryExpression) e;
-			int left = evaluate(binary.getLeft(), domain);
-			int right = evaluate(binary.getRight(), domain);
-			if (right != -1 && left != -1) {
+			Integer left = evaluate(binary.getLeft(), domain);
+			Integer right = evaluate(binary.getRight(), domain);
+			if (right != null && left != null) {
 				Operator operator = binary.getOperator();
 				if (operator instanceof AdditionOperator) {
 					res = left + right;
 				} else if (operator instanceof DivisionOperator) {
-					res = left == 0 ? res : left / right;
+					res = left == 0 ? null : left / right;
 				} else if (operator instanceof ModuloOperator) {
-					res = right == 0 ? res : left % right;
+					res = right == 0 ? null : left % right;
 				} else if (operator instanceof MultiplicationOperator) {
 					res = left * right;
 				} else if (operator instanceof SubtractionOperator) {
@@ -89,8 +89,8 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 	public Collection<CProp> gen(Identifier id, ValueExpression expression, ProgramPoint pp,
 			DefiniteDataflowDomain<CProp> domain) throws SemanticException {
 		Set<CProp> gen = new HashSet<>();
-		int evaluation = evaluate(expression, domain);
-		if (evaluation != -1) {
+		Integer evaluation = evaluate(expression, domain);
+		if (evaluation != null) {
 			gen.add(new CProp(id, evaluation));
 		}
 		return gen;
