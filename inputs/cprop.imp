@@ -27,4 +27,16 @@ class cp {
 		
 		return;
 	}
+
+	f2() {
+    		def xy = 0;
+    		def y = 3;
+            def x = xy + y;
+            def a = xy - y;
+            def c = xy * y;
+            def d = xy / y;
+            x = x + 3;
+
+    		return;
+    	}
 }

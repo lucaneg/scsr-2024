@@ -61,7 +61,7 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
             if (right == null || left == null) return null;
             else if (op instanceof AdditionOperator) res = left + right;
             else if (op instanceof SubtractionOperator) res = left - right;
-            else if (op instanceof DivisionOperator) res = left == 0 ? null : (int) left / right;
+            else if (op instanceof DivisionOperator) res = right == 0 ? null : (int) left / right;
             else if (op instanceof MultiplicationOperator) res = left * right;
         }
 
