@@ -19,6 +19,7 @@ import it.unive.lisa.symbolic.value.operator.ModuloOperator;
 import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
 import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
 import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
+import it.unive.lisa.symbolic.value.operator.unary.NumericNegation;
 import it.unive.lisa.util.representation.StructuredRepresentation;
 import it.unive.lisa.util.representation.ListRepresentation;
 import it.unive.lisa.util.representation.StringRepresentation;
@@ -61,6 +62,8 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 		} else if (expression instanceof UnaryExpression) {
 			UnaryExpression ue = (UnaryExpression) expression;
 			value = getValue(ue.getExpression(), domain);
+
+			if (ue.getOperator() instanceof NumericNegation) value *= -1;
 
 		} else if (expression instanceof BinaryExpression) {
 			BinaryExpression be = (BinaryExpression) expression;
