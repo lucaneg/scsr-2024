@@ -3,6 +3,7 @@ package it.unive.scsr;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 
 import it.unive.lisa.analysis.ScopeToken;
 import it.unive.lisa.analysis.SemanticException;
@@ -41,6 +42,24 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 	public CProp (Identifier r_id, Integer r_constant) {
 		this.id = r_id;
 		this.constant = r_constant;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+
+		if (obj == null || !(obj instanceof CProp))
+			return false;
+
+		CProp o = (CProp) obj;
+
+		return this.constant == o.constant && id.equals(o.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, constant);
 	}
 
 	public Integer evaluate(SymbolicExpression sym_expr, DefiniteDataflowDomain<CProp> def_domain) {
