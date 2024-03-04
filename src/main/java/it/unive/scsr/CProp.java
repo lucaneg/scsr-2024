@@ -140,13 +140,6 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 	public Collection<CProp> kill(Identifier id, ValueExpression expression, ProgramPoint pp,
 	DefiniteDataflowDomain<CProp> domain) throws SemanticException {
 		
-		return new HashSet<>();
-	}
-	
-	@Override
-	public Collection<CProp> kill(ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain)
-	throws SemanticException {
-		
 		HashSet<CProp> result = new HashSet<>();
 
 		if (expression instanceof Constant)
@@ -160,6 +153,13 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 			}
 			
 		return result;
+	}
+	
+	@Override
+	public Collection<CProp> kill(ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain)
+	throws SemanticException {
+		
+		return new HashSet<>();
 	}
 		// IMPLEMENTATION NOTE:
 		// the code below is outside of the scope of the course. You can uncomment
