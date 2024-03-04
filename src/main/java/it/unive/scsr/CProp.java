@@ -24,27 +24,31 @@ import it.unive.lisa.util.representation.StructuredRepresentation;
 import java.util.Collections;
 
 public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CProp> {	
-	//The id and constant being defined
+	//The Identifier and Constant being defined
 	private final Identifier id;
 	private final Constant constant;
 	// A Map is defined to map the couples identifier-constant
 	private Map<Identifier, Constant> constantVariableMap;
 	// Constructors
+	// Here I defined an empty constructor
     public CProp() {
         this.constantVariableMap = new HashMap<>();
 		this.id = null;
 		this.constant = null;
     }
+	// Here I defined a constructor just with constant
 	public CProp(Constant constant) {
         this.constantVariableMap = new HashMap<>();
 		this.id = null;
 		this.constant = constant;
 	}
+	// Here I defined a constructor just with id
 	public CProp(Identifier id) {
         this.constantVariableMap = new HashMap<>();
 		this.id = id;
 		this.constant = null;
 	}
+	// Here I defined a constructor with both id and constant
 	public CProp(Identifier id, Constant constant) {
         this.constantVariableMap = new HashMap<>();
 		this.id = id;
@@ -90,9 +94,13 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 	}
 	
     //Point 2: Assignments to constant expressions (evaluate expressions containing constants and variables, and
-	// store the new constant-variable pair if the result is constant - support x+y, x-y, x*y, x/y, -x) [OK]
+	// store the new constant-variable pair if the result is constant - support x+y, x-y, x*y, x/y, -x)
 	
 	// 2+5*2 -> 12
+	// -3+4*1 -> 1
+	/*
+     * @explain: function that evaluates an expression given as a string
+     */
 	public BigDecimal eval(final String str) {
         return new Object() {
             int pos = -1, ch;
@@ -156,6 +164,10 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
     }
     
     //Point 3: When a variable is assigned to a non-constant value, kill it
+	/*
+	 * @explain: function kill that takes in input an identifier, an expression, a programpoint and a domain
+	 * 			 and kill the variables that have been modified from their initialization
+	 */
     @Override
     public Collection<CProp> kill(Identifier id, ValueExpression expression, ProgramPoint pp,
                                   DefiniteDataflowDomain<CProp> domain) {
