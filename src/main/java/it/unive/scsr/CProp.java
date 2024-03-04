@@ -10,9 +10,17 @@ import it.unive.lisa.analysis.SemanticException;
 import it.unive.lisa.analysis.dataflow.DataflowElement;
 import it.unive.lisa.analysis.dataflow.DefiniteDataflowDomain;
 import it.unive.lisa.program.cfg.ProgramPoint;
+import it.unive.lisa.symbolic.value.BinaryExpression;
 import it.unive.lisa.symbolic.value.Constant;
 import it.unive.lisa.symbolic.value.Identifier;
+import it.unive.lisa.symbolic.value.UnaryExpression;
 import it.unive.lisa.symbolic.value.ValueExpression;
+import it.unive.lisa.symbolic.value.operator.AdditionOperator;
+import it.unive.lisa.symbolic.value.operator.DivisionOperator;
+import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
+import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
+import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
+import it.unive.lisa.symbolic.value.operator.unary.NumericNegation;
 import it.unive.lisa.util.representation.ListRepresentation;
 import it.unive.lisa.util.representation.StringRepresentation;
 import it.unive.lisa.util.representation.StructuredRepresentation;
@@ -75,13 +83,116 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 	public Collection<CProp> gen(Identifier id, ValueExpression expression, ProgramPoint pp,
 			DefiniteDataflowDomain<CProp> domain) throws SemanticException {
 		
-		Set<CProp> constants= new HashSet<>();
+		Set<CProp> constantEvaluations= new HashSet<>();
+		
+		if(expression.getClass()== Constant.class) {
+			
+			CProp c=new CProp(id,(Constant)expression);
+			constantEvaluations.add(c);
+		}
+		else
+		{
+			if(expression.getClass()== Identifier.class)
+			{
+				Identifier ide=(Identifier) expression;
+				for (CProp cp: domain.getDataflowElements())
+				{
+					if(cp.id.equals(ide) && cp.getInvolvedIdentifiers().contains(ide))
+					{
+						
+						constantEvaluations.add(cp);
+					}
+					
+				}
+				
+			}
+			else
+			{
+				if(expression.getClass()==UnaryExpression.class)
+				{
+					
+					UnaryExpression u=(UnaryExpression) expression;
+					Integer i=null/*evaluateUnary(u,domain)*/;
+					
+					if(i!=null)
+					{
+						Constant c;
+						
+					
+						if(u.getOperator()==NumericNegation.INSTANCE==true)
+						{	
+							c=new Constant(expression.getStaticType(),Integer.valueOf(-i),expression.getCodeLocation());
+							
+						}
+						else
+							c=new Constant(expression.getStaticType(),i,expression.getCodeLocation());
+						
+						
+						constantEvaluations.add(new CProp(id,c));
+										
+					}
+					
+			
+			}
+			else
+			{
+				if(expression.getClass()==BinaryExpression.class)
+				{
+					BinaryExpression b=(BinaryExpression) expression;
+					
+					Integer left=null/*evaluateBinary(b.getLeft(),domain)*/;
+					Integer right=null/*evaluateBinary(b.getLeft(),domain)*/;
+					
+					BinaryOperator op=b.getOperator();
+					
+					if(left!=null && right!=null) {
+						
+						Constant c;
+						
+						if(op instanceof AdditionOperator)
+						{
+							c=new Constant(expression.getStaticType(),left+right,expression.getCodeLocation());
+							constantEvaluations.add(new CProp(id,c));
+							
+						}
+						else
+							if(op instanceof SubtractionOperator)
+							{
+								c=new Constant(expression.getStaticType(),left-right,expression.getCodeLocation());
+								constantEvaluations.add(new CProp(id,c));
+								
+							}
+							else
+								if(op instanceof MultiplicationOperator)
+								{
+									c=new Constant(expression.getStaticType(),left*right,expression.getCodeLocation());
+									constantEvaluations.add(new CProp(id,c));
+									
+								}
+								else
+									if(op instanceof DivisionOperator)
+									{
+										c=new Constant(expression.getStaticType(),left/right,expression.getCodeLocation());
+										constantEvaluations.add(new CProp(id,c));
+										
+									}
+					}
+				}
+				
+			}
+				
+				
+			}
+			
+		}
+		
+		
 		for (CProp cp: domain.getDataflowElements())
 		{
-			constants.add(cp);
+			constantEvaluations.add(cp);
 			System.out.println("Expression: "+ expression.getStaticType());
 		}
-		return constants;
+		return constantEvaluations;
 	}
 
 	@Override
