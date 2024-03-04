@@ -68,8 +68,11 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 			// -x
 			UnaryExpression u = (UnaryExpression) sym_expr;
 			Integer value = evaluate(u.getExpression(), def_domain);
+
+			if (value == null)
+				return null;
 			
-			if ( u.getOperator() instanceof NumericNegation)
+			if (u.getOperator() instanceof NumericNegation)
 				return -value;
 
 		} else if (sym_expr instanceof BinaryExpression) {
@@ -81,13 +84,16 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 
 			BinaryOperator operator = b.getOperator();
 
+			if (l == null || r == null)
+				return null;
+
 			if (operator instanceof AdditionOperator)
 				return l + r;
 			else if (operator instanceof SubtractionOperator)
 				return l - r;
 			else if (operator instanceof MultiplicationOperator)
 				return l * r;
-			else if (operator instanceof DivisionOperator)
+			else if (operator instanceof DivisionOperator && r != 0) 
 				return l / r;
 
 		} else if (sym_expr instanceof Constant) {
