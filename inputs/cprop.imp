@@ -10,20 +10,17 @@ class cp {
 	}
 	
 	f1() {
-		def xy = 0;
-		def b = -1;
-		def y = 3;
-		def z = 5;
-		def n = 7 * 3;
-		def a = xy + y;
+		def x = "2+4+6*5";
+		def y = "3+5*";
+		def z = 7*2+4-6+2-";
 		
-		if (xy == 0) { 
-			xy = z;
-			b = xy + y;
-		} else {
-			xy = 1;
-			b = xy + y;
-		}
+		return;
+	}
+	
+	f2() {
+		def x = 2;
+		def y = 4;
+		x = 3;
 		
 		return;
 	}

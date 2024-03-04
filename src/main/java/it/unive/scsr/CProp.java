@@ -7,16 +7,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
 import java.math.BigDecimal;
 
 import it.unive.lisa.analysis.ScopeToken;
 import it.unive.lisa.analysis.SemanticException;
 import it.unive.lisa.analysis.dataflow.DataflowElement;
-import it.unive.lisa.analysis.dataflow.PossibleDataflowDomain;
+import it.unive.lisa.analysis.dataflow.DefiniteDataflowDomain;
 import it.unive.lisa.program.cfg.ProgramPoint;
 import it.unive.lisa.symbolic.value.Constant;
 import it.unive.lisa.symbolic.value.Identifier;
@@ -25,7 +21,9 @@ import it.unive.lisa.util.representation.ListRepresentation;
 import it.unive.lisa.util.representation.StringRepresentation;
 import it.unive.lisa.util.representation.StructuredRepresentation;
 
-public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CProp> {	
+import java.util.Collections;
+
+public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CProp> {	
 	//The id and constant being defined
 	private final Identifier id;
 	private final Constant constant;
@@ -77,7 +75,10 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
 		return constant == other.constant && Objects.equals(id, other.id);
 	}
 
-	//Point 1: Assignments to constants (store the constant-variable pair) [OK]
+	//Point 1: Assignments to constants (store the constant-variable pair)
+	/*
+     * @explain: with this method I map the couples <identier,constant>
+     */
 	public void assignConstant(Identifier id, Constant constant) {
 		constantVariableMap.put(id, constant);
 	}
@@ -92,7 +93,7 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
 	// store the new constant-variable pair if the result is constant - support x+y, x-y, x*y, x/y, -x) [OK]
 	
 	// 2+5*2 -> 12
-	public static BigDecimal eval(final String str) {
+	public BigDecimal eval(final String str) {
         return new Object() {
             int pos = -1, ch;
 
@@ -156,48 +157,23 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
     
     //Point 3: When a variable is assigned to a non-constant value, kill it
     @Override
-    public Collection<Identifier> getInvolvedIdentifiers() {
-		Set<Identifier> result = new HashSet<>();
-		result.add(id);
-		return result;
-	}
+    public Collection<CProp> kill(Identifier id, ValueExpression expression, ProgramPoint pp,
+                                  DefiniteDataflowDomain<CProp> domain) {
+        Collection<CProp> var_killed = new HashSet<>();
+        if (!(expression instanceof Constant)) {
+            for (CProp cp : domain.getDataflowElements()) {
+                if (cp.id.equals(id)) {
+                    var_killed.add(cp);
+                }
+            }
+        }
+        return var_killed;
+    }
     @Override
-    public Collection<CProp> kill(
-			Identifier id,
-			ValueExpression expression,
-			ProgramPoint pp,
-			PossibleDataflowDomain<CProp> domain)
-			throws SemanticException {
-		// we kill all of the elements that refer to the variable being
-		// assigned, as we are redefining the variable
-		Set<CProp> killed = new HashSet<>();
-		for (CProp rd : domain.getDataflowElements())
-			// we could use `rd.variable.equals(id)` as elements of this class
-			// refer to one variable at a time
-			if (rd.getInvolvedIdentifiers().contains(id))
-				killed.add(rd);
-		return killed;
-	}
-	public Collection<CProp> kill(
-			ValueExpression expression,
-			ProgramPoint pp,
-			PossibleDataflowDomain<CProp> domain)
-			throws SemanticException {
-		// if no assignment is performed, no element is killed!
-		return new HashSet<>();
-	}
-	@Override
-	public Collection<CProp> gen(Identifier id, ValueExpression expression, ProgramPoint pp,
-			PossibleDataflowDomain<CProp> domain) throws SemanticException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public Collection<CProp> gen(ValueExpression expression, ProgramPoint pp, PossibleDataflowDomain<CProp> domain)
-			throws SemanticException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Collection<CProp> kill(ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain) {
+        return Collections.emptySet();
+    }
+	
 
 	// IMPLEMENTATION NOTE:
 	// the code below is outside of the scope of the course. You can uncomment
@@ -224,5 +200,23 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
 			ScopeToken scope)
 			throws SemanticException {
 		return this;
+	}
+	@Override
+    public Collection<Identifier> getInvolvedIdentifiers() {
+		Set<Identifier> result = new HashSet<>();
+		result.add(id);
+		return result;
+	}
+	@Override
+	public Collection<CProp> gen(Identifier id, ValueExpression expression, ProgramPoint pp,
+			DefiniteDataflowDomain<CProp> domain) throws SemanticException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Collection<CProp> gen(ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain)
+			throws SemanticException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

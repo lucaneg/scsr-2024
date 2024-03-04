@@ -15,7 +15,7 @@ import it.unive.lisa.program.Program;
 public class CPropTest {
 
 	@Test
-	public void testRD() throws ParsingException, AnalysisException {
+	public void testCP() throws ParsingException, AnalysisException {
 		// we parse the program to get the CFG representation of the code in it
 		Program program = IMPFrontend.processFile("inputs/cprop.imp");
 
