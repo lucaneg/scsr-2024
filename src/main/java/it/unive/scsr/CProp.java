@@ -4,7 +4,6 @@ import it.unive.lisa.analysis.ScopeToken;
 import it.unive.lisa.analysis.SemanticException;
 import it.unive.lisa.analysis.dataflow.DataflowElement;
 import it.unive.lisa.analysis.dataflow.DefiniteDataflowDomain;
-import it.unive.lisa.analysis.dataflow.PossibleDataflowDomain;
 import it.unive.lisa.program.cfg.ProgramPoint;
 import it.unive.lisa.symbolic.SymbolicExpression;
 import it.unive.lisa.symbolic.value.*;
@@ -44,7 +43,7 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 		if(exp instanceof UnaryExpression ue){
 			Integer i = evaluateExp(ue, domain);
 			if(i == null) return null;
-			return ue.getOperator() == NumericNegation.INSTANCE ? i : Integer.valueOf(-i);
+			return ue.getOperator() == NumericNegation.INSTANCE ? Integer.valueOf(-i) : i;
 		}
 
 		if(exp instanceof BinaryExpression be){
@@ -55,7 +54,6 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 			if(left == null || right == null) return null;
 			if(operator instanceof AdditionOperator) return left + right;
 			if(operator instanceof SubtractionOperator) return left - right;
-			if(operator instanceof ModuloOperator) return left % right;
 			if(operator instanceof MultiplicationOperator) return left * right;
 			if(operator instanceof DivisionOperator) return left / right;
 		}
@@ -69,7 +67,8 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 
 	@Override
 	public Collection<CProp> gen(Identifier id, ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain) throws SemanticException {
-		return evaluateExp(expression, domain) != null ? Collections.singleton(new CProp(id, constant)) : Collections.emptySet();
+		Integer value = evaluateExp(expression, domain);
+		return value != null ? Collections.singleton(new CProp(id, value)) : Collections.emptySet();
 	}
 
 	@Override
