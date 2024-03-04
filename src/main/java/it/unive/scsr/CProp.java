@@ -11,7 +11,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import com.ibm.icu.math.BigDecimal;
+import java.math.BigDecimal;
 
 import it.unive.lisa.analysis.ScopeToken;
 import it.unive.lisa.analysis.SemanticException;
@@ -90,69 +90,6 @@ public class CProp implements DataflowElement<PossibleDataflowDomain<CProp>, CPr
 	
     //Point 2: Assignments to constant expressions (evaluate expressions containing constants and variables, and
 	// store the new constant-variable pair if the result is constant - support x+y, x-y, x*y, x/y, -x) [OK]
-	// ASSUMPTION: There are just 2 numbers and 1 operator on each expression
-	/*public void assignConstant(String expression) {
-		int result = evaluateExpression(expression);
-		if (result != Integer.MIN_VALUE) {
-			System.out.println("OK" + evaluateExpression(expression));
-		}else System.out.println("Not OK");
-	}
-    private int evaluateExpression(String expression) {
-    	boolean trovato = false;
-    	int i = 0;
-    	int result = 0;
-        try {
-        	while(!trovato && i<expression.length()) {
-        		if(i != 0 && (expression.charAt(i)=='+' || expression.charAt(i)=='-' || expression.charAt(i)=='*' || expression.charAt(i)=='/')) {
-        			int n1 = Integer.parseInt(expression.substring(0,i));
-        			int n2 = Integer.parseInt(expression.substring(i+1,expression.length()));
-        			if(expression.charAt(i)=='+') result = n1+n2;
-        			else if(expression.charAt(i)=='-') result = n1-n2;
-        			else if(expression.charAt(i)=='*') result  = n1*n2;
-        			else if(expression.charAt(i)=='/') result = n1/n2;
-        			trovato = true;
-        			return result;
-        		} else if(i == 0 && expression.charAt(i)=='-') {
-        			int n1 = Integer.parseInt(expression.substring(i+1,expression.length()));
-        			result = -n1;
-        			trovato = true;
-        			return result;
-        		}
-        		i = i+1;
-        	}
-        	return Integer.parseInt(expression);
-        } catch (NumberFormatException e) {
-            // If expression cannot be parsed directly as integer, it's not a constant
-            return Integer.MIN_VALUE;
-        }
-    }*/
-	
-	/*public void assignConstant(String expression) {
-        try {
-            int result = evaluateExpression(expression);
-            if (result != Integer.MIN_VALUE) {
-                System.out.println("OK   " + result);
-            } else {
-                System.out.println("Not OK");
-            }
-        } catch (Exception e) { System.out.println("Not OK"); }
-    }
-
-    private int evaluateExpression(String expression) throws ScriptException{
-        try{
-            ScriptEngineManager manager = new ScriptEngineManager();
-            ScriptEngine engine = manager.getEngineByName("JavaScript");
-            Object result = engine.eval(expression);
-            if (result instanceof Number) {
-                return ((Number) result).intValue();
-            } else {
-                return Integer.MIN_VALUE; // Return MIN_VALUE if the result is not a number
-            }
-        }  catch (NumberFormatException e) {
-            // If expression cannot be parsed directly as integer, it's not a constant
-            return Integer.MIN_VALUE;
-        }
-    }*/
 	
 	// 2+5*2 -> 12
 	public static BigDecimal eval(final String str) {
