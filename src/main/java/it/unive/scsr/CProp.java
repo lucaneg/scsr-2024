@@ -87,11 +87,6 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 				try {
 					value = left / right;
 				} catch (ArithmeticException ae) {}		// value is still null
-
-			} else if (op instanceof ModuloOperator) {
-				try {
-					value = left % right;
-				} catch (ArithmeticException ae) {}		// value is still null
 			}
 		}
 
