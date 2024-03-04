@@ -21,6 +21,7 @@ import it.unive.lisa.symbolic.value.operator.AdditionOperator;
 import it.unive.lisa.symbolic.value.operator.DivisionOperator;
 import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
 import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
+import it.unive.lisa.symbolic.value.operator.unary.NumericNegation;
 import it.unive.lisa.util.representation.ListRepresentation;
 import it.unive.lisa.util.representation.StringRepresentation;
 import it.unive.lisa.util.representation.StructuredRepresentation;
@@ -96,7 +97,7 @@ public class CProp  implements
 		
 		if (expression instanceof UnaryExpression) {
 			Integer r = expEvaluation(((UnaryExpression) expression).getExpression(),domain);
-			return r.equals(null) ? null : -r;
+			return r.equals(null) ? null : (((UnaryExpression) expression).getOperator() instanceof NumericNegation ? -r : null);
 		}
 
 		if (expression instanceof BinaryExpression) { 
@@ -107,9 +108,8 @@ public class CProp  implements
 			if (expr.getOperator() instanceof AdditionOperator) return rl + rr;
 			if (expr.getOperator() instanceof SubtractionOperator) return rl - rr;
 			if (expr.getOperator() instanceof MultiplicationOperator) return rl * rr;
-			if (expr.getOperator() instanceof DivisionOperator) return rl / rr;
+			if (expr.getOperator() instanceof DivisionOperator) return rr != 0 ?  rl / rr : null;
 		}
-
 		return null;
 	}
 

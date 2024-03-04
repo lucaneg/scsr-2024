@@ -27,4 +27,30 @@ class cp {
 		
 		return;
 	}
+
+	f2() {
+		def a = 2;
+		def b = 23;
+		def c = a + b;
+		def e = c * b;
+		
+		if (c > 5) {
+			c = c - 1;
+		} else {
+			c = c + 1;
+		}
+		
+		return;
+	}
+
+	f3() {
+		def x = 0;
+		def y = 2;
+		def z = x / y;
+		def w = x * y;
+		def u = -4;
+		def v = u + w;
+		
+		return;
+	}
 }
