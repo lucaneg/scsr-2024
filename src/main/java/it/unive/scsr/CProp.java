@@ -131,6 +131,8 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 			// than i can evalueate the expression based on its operator 
 			BinaryOperator op = ((BinaryExpression)exp).getOperator();
 
+			if (left==null||right==null)              return null;
+
 			if(op instanceof AdditionOperator)        return left + right;
 			if(op instanceof SubtractionOperator)     return left - right;
 			if(op instanceof MultiplicationOperator)  return left * right;
