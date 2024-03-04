@@ -92,8 +92,8 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 	}
 
 	@Override
-	public Collection<CProp> kill(ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain)
-			throws SemanticException {
+	public Collection<CProp> kill(Identifier id, ValueExpression expression, ProgramPoint pp,
+			DefiniteDataflowDomain<CProp> domain) throws SemanticException {
 
 		HashSet<CProp> set = new HashSet<>();
 
@@ -107,8 +107,8 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 	}
 
 	@Override
-	public Collection<CProp> kill(Identifier id, ValueExpression expression, ProgramPoint pp,
-			DefiniteDataflowDomain<CProp> domain) throws SemanticException {
+	public Collection<CProp> kill(ValueExpression expression, ProgramPoint pp, DefiniteDataflowDomain<CProp> domain)
+			throws SemanticException {
 		return new HashSet<>();
 	}
 
