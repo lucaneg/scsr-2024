@@ -10,6 +10,7 @@ import it.unive.lisa.analysis.SemanticException;
 import it.unive.lisa.analysis.dataflow.DataflowElement;
 import it.unive.lisa.analysis.dataflow.DefiniteDataflowDomain;
 import it.unive.lisa.program.cfg.ProgramPoint;
+import it.unive.lisa.symbolic.SymbolicExpression;
 import it.unive.lisa.symbolic.value.BinaryExpression;
 import it.unive.lisa.symbolic.value.Constant;
 import it.unive.lisa.symbolic.value.Identifier;
@@ -78,17 +79,14 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 		result.add(id);
 		return result;
 	}
-
-	@Override
-	public Collection<CProp> gen(Identifier id, ValueExpression expression, ProgramPoint pp,
-			DefiniteDataflowDomain<CProp> domain) throws SemanticException {
-		
-		Set<CProp> constantEvaluations= new HashSet<>();
-		
+	
+	private CProp evaluation(Identifier id, ValueExpression expression, ProgramPoint pp,
+			DefiniteDataflowDomain<CProp> domain,SymbolicExpression se)
+	{
 		if(expression.getClass()== Constant.class) {
 			
 			CProp c=new CProp(id,(Constant)expression);
-			constantEvaluations.add(c);
+			return c;
 		}
 		else
 		{
@@ -100,7 +98,7 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 					if(cp.id.equals(ide) && cp.getInvolvedIdentifiers().contains(ide))
 					{
 						
-						constantEvaluations.add(cp);
+						return cp;
 					}
 					
 				}
@@ -112,9 +110,11 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 				{
 					
 					UnaryExpression u=(UnaryExpression) expression;
-					Integer i=null/*evaluateUnary(u,domain)*/;
+					Integer i=(Integer) evaluation(id,expression,pp,domain,u).constant.getValue();
 					
-					if(i!=null)
+					if(i==null)
+						return null;
+					else
 					{
 						Constant c;
 						
@@ -128,7 +128,7 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 							c=new Constant(expression.getStaticType(),i,expression.getCodeLocation());
 						
 						
-						constantEvaluations.add(new CProp(id,c));
+						return new CProp(id,c);
 										
 					}
 					
@@ -140,58 +140,64 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
 				{
 					BinaryExpression b=(BinaryExpression) expression;
 					
-					Integer left=null/*evaluateBinary(b.getLeft(),domain)*/;
-					Integer right=null/*evaluateBinary(b.getLeft(),domain)*/;
+					Integer left=(Integer)evaluation(id,expression,pp,domain,b.getLeft()).constant.getValue();
+					Integer right=(Integer)evaluation(id,expression,pp,domain,b.getRight()).constant.getValue();
 					
 					BinaryOperator op=b.getOperator();
 					
-					if(left!=null && right!=null) {
+					if(left ==null || right==null)
+						return null;
+					
+					else{
 						
 						Constant c;
 						
 						if(op instanceof AdditionOperator)
 						{
 							c=new Constant(expression.getStaticType(),left+right,expression.getCodeLocation());
-							constantEvaluations.add(new CProp(id,c));
+							return new CProp(id,c);
 							
 						}
 						else
 							if(op instanceof SubtractionOperator)
 							{
 								c=new Constant(expression.getStaticType(),left-right,expression.getCodeLocation());
-								constantEvaluations.add(new CProp(id,c));
+								return new CProp(id,c);
 								
 							}
 							else
 								if(op instanceof MultiplicationOperator)
 								{
 									c=new Constant(expression.getStaticType(),left*right,expression.getCodeLocation());
-									constantEvaluations.add(new CProp(id,c));
+									return new CProp(id,c);
 									
 								}
 								else
 									if(op instanceof DivisionOperator)
 									{
 										c=new Constant(expression.getStaticType(),left/right,expression.getCodeLocation());
-										constantEvaluations.add(new CProp(id,c));
+										return new CProp(id,c);
 										
 									}
+							}	
+		
+						}
 					}
 				}
-				
 			}
-				
-				
-			}
+		return null;
+		}		
+	@Override
+	public Collection<CProp> gen(Identifier id, ValueExpression expression, ProgramPoint pp,
+			DefiniteDataflowDomain<CProp> domain) throws SemanticException {
+		
+		Set<CProp> constantEvaluations= new HashSet<>();
+		
+		CProp result=evaluation(id,expression,pp,domain,expression);
+		
+		if(result!=null)
+			constantEvaluations.add(result);
 			
-		}
-		
-		
-		for (CProp cp: domain.getDataflowElements())
-		{
-			constantEvaluations.add(cp);
-			System.out.println("Expression: "+ expression.getStaticType());
-		}
 		return constantEvaluations;
 	}
 
