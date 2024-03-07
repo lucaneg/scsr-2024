@@ -1,0 +1,48 @@
+class cp {
+
+	f0() {
+		def x = 10;
+		def y = 5;
+		def z = x * y;
+		def d = 5 + 7;
+		def w = 9 - y;
+		def k = x / y;
+		def p = -k;
+		def l = x * y + 4 - z;
+		return;
+	}
+	
+	f1() {
+		def xy = 0;
+		def b = -1;
+		def y = 3;
+		def z = 5;
+		
+		if (xy == 0) { 
+			xy = z;
+			b = xy + y;
+		} else {
+			xy = 1;
+			b = xy + y;
+		}
+		
+		return;
+	}
+
+	f2() {
+		def c = 1;
+		def b = 0;
+   		while (b < 10) 
+        	b = b + c;
+   		return b;
+    }
+	
+	f3(i) {
+		def j = 9;
+		if (j != 0)
+			i = i / j;
+		else
+			i = 3;
+		return i;
+	}
+}
