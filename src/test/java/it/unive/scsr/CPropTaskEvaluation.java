@@ -28,7 +28,7 @@ import it.unive.lisa.util.file.FileManager;
 public class CPropTaskEvaluation {
 
 	@Test
-	public void testRD() throws ParsingException, AnalysisException {
+	public void testCP() throws ParsingException, AnalysisException {
 		Program program = IMPFrontend.processFile("inputs/cp-eval.imp");
 		LiSAConfiguration conf = new DefaultConfiguration();
 		conf.workdir = "outputs/cp-eval";
