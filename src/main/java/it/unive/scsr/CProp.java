@@ -34,6 +34,10 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
         this.id = id;
         this.constant = constant;
     }
+    
+    public CProp() {
+    	this(null,null);
+    }
 
     @Override
     public Collection<Identifier> getInvolvedIdentifiers() {
@@ -128,4 +132,4 @@ public class CProp implements DataflowElement<DefiniteDataflowDomain<CProp>, CPr
     public CProp popScope(ScopeToken scope) throws SemanticException {
         return this;
     }
-
+}
