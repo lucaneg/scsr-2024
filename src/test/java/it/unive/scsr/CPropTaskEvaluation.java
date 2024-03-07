@@ -37,7 +37,7 @@ public class CPropTaskEvaluation {
 		conf.analysisGraphs = GraphType.HTML;
 		conf.abstractState = DefaultConfiguration.simpleState(
 				DefaultConfiguration.defaultHeapDomain(),
-				new DefiniteDataflowDomain<>(new CProp()),
+				new DefiniteDataflowDomain<>(new CPropSolution()),
 				DefaultConfiguration.defaultTypeDomain());
 
 		try {
