@@ -1,12 +1,9 @@
-class signs {
-
-
-	branches(a, b) {
-		def x = 0;
-		if (a > b)
-           	x = 20;
-       	else
-           	x = 9;
-		def y = x / x;
+class parity {
+	loop() {
+		def c = 1;
+		def b = 0;
+   		while (b < 10)
+        	b = b + c;
+   		return b;
     }
 }

@@ -4,8 +4,10 @@ import it.unive.lisa.analysis.Lattice;
 import it.unive.lisa.analysis.SemanticException;
 import it.unive.lisa.analysis.SemanticOracle;
 import it.unive.lisa.analysis.nonrelational.value.BaseNonRelationalValueDomain;
+import it.unive.lisa.analysis.nonrelational.value.ValueEnvironment;
 import it.unive.lisa.program.cfg.ProgramPoint;
 import it.unive.lisa.symbolic.value.Constant;
+import it.unive.lisa.symbolic.value.ValueExpression;
 import it.unive.lisa.symbolic.value.operator.AdditionOperator;
 import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
 import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
@@ -83,6 +85,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
     @Override
     public boolean lessOrEqualAux(Parity other) throws SemanticException {
+        System.out.println("SONO QUAAAAAAAAA MINORE O UGUALEEEEE " + other.type + " " + other.type.getValue());
         return false;
     }
 
@@ -108,6 +111,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
     @Override
     public Parity evalUnaryExpression(UnaryOperator operator, Parity arg, ProgramPoint pp, SemanticOracle oracle) throws SemanticException {
+
         if (operator instanceof NumericNegation) {
             return arg;
         }
@@ -138,11 +142,11 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
     private static Parity evaluateMoltiplication(Parity left, Parity right) {
         if (left == EVEN || right == EVEN) return EVEN;
-        if (left == ODD && right == ODD) return EVEN;
+        if (left == ODD && right == ODD) return ODD;
         return TOP;
     }
 
-//    private static Parity evaluateDivision(Parity left, Parity right) {
-//
-//    }
+    private static Parity evaluateDivision(Parity left, Parity right) {
+        return TOP;
+    }
 }
