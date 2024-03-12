@@ -1,24 +1,148 @@
 package it.unive.scsr;
 
-public class Parity {
+import it.unive.lisa.analysis.Lattice;
+import it.unive.lisa.analysis.SemanticException;
+import it.unive.lisa.analysis.SemanticOracle;
+import it.unive.lisa.analysis.nonrelational.value.BaseNonRelationalValueDomain;
+import it.unive.lisa.program.cfg.ProgramPoint;
+import it.unive.lisa.symbolic.value.Constant;
+import it.unive.lisa.symbolic.value.operator.AdditionOperator;
+import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
+import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
+import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
+import it.unive.lisa.symbolic.value.operator.unary.NumericNegation;
+import it.unive.lisa.symbolic.value.operator.unary.UnaryOperator;
+import it.unive.lisa.util.representation.StringRepresentation;
+import it.unive.lisa.util.representation.StructuredRepresentation;
 
-	// IMPLEMENTATION NOTE:
-	// the code below is outside of the scope of the course. You can uncomment
-	// it to get your code to compile. Be aware that the code is written
-	// expecting that you have constants for identifying top, bottom, even and
-	// odd elements as we saw for the sign domain: if you name them differently,
-	// change also the code below to make it work by just using the name of your
-	// choice. If you use methods instead of constants, change == with the
-	// invocation of the corresponding method
+public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
-//	@Override
-//	public StructuredRepresentation representation() {
-//		if (this == TOP)
-//			return Lattice.topRepresentation();
-//		if (this == BOTTOM)
-//			return Lattice.bottomRepresentation();
-//		if (this == EVEN)
-//			return new StringRepresentation("EVEN");
-//		return new StringRepresentation("ODD");
-//	}
+
+    private enum Type {
+        EVEN(10),
+        ODD(20),
+        TOP(30),
+        BOTTOM(40);
+
+        private final int value;
+        private Type(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return this.value;
+        }
+    }
+
+    private final Type type;
+    private static final Parity TOP = new Parity(Type.TOP);
+    private static final Parity ODD = new Parity(Type.ODD);
+    private static final Parity EVEN = new Parity(Type.EVEN);
+    private static final Parity BOTTOM = new Parity(Type.BOTTOM);
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime*result + this.type.getValue();
+        return result;
+    }
+
+    public Parity() {
+        this(Type.TOP);
+    }
+
+    public Parity(Type type) {
+        this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object rhs) {
+        if (rhs == this) return true;
+        if (rhs == null) return false;
+        if (getClass() != rhs.getClass()) return false;
+        Parity other = (Parity) rhs;
+        if (type.getValue() != other.type.getValue()) return false;
+        return true;
+    }
+	@Override
+	public StructuredRepresentation representation() {
+		if (this == TOP)
+			return Lattice.topRepresentation();
+		if (this == BOTTOM)
+			return Lattice.bottomRepresentation();
+		if (this == EVEN)
+			return new StringRepresentation("EVEN");
+		return new StringRepresentation("ODD");
+	}
+
+    @Override
+    public Parity lubAux(Parity other) throws SemanticException {
+        return TOP;
+    }
+
+    @Override
+    public boolean lessOrEqualAux(Parity other) throws SemanticException {
+        return false;
+    }
+
+    @Override
+    public Parity top() {
+        return TOP;
+    }
+
+    @Override
+    public Parity bottom() {
+        return BOTTOM;
+    }
+
+    @Override
+    public Parity evalNonNullConstant(Constant constant, ProgramPoint pp, SemanticOracle oracle) {
+        if (constant.getValue() instanceof Integer) {
+            Integer i = (Integer) constant.getValue();
+            if (i % 2 == 0) return EVEN;
+            else return ODD;
+        }
+        return TOP;
+    }
+
+    @Override
+    public Parity evalUnaryExpression(UnaryOperator operator, Parity arg, ProgramPoint pp, SemanticOracle oracle) throws SemanticException {
+        if (operator instanceof NumericNegation) {
+            return arg;
+        }
+        return TOP;
+    }
+
+    @Override
+    public Parity evalBinaryExpression(BinaryOperator operator, Parity left, Parity right, ProgramPoint pp, SemanticOracle oracle) throws SemanticException {
+
+        if (operator instanceof AdditionOperator) return evaluateAddition(left, right);
+        if (operator instanceof SubtractionOperator) return evaluateSubstracton(left, right);
+        if (operator instanceof MultiplicationOperator) return evaluateMoltiplication(left, right);
+        return TOP;
+
+    }
+
+    private static Parity evaluateAddition(Parity left, Parity right) {
+        if (left == EVEN && right == EVEN) return EVEN;
+        if (left == ODD && right == ODD) return ODD;
+        if (left == EVEN && right == ODD) return ODD;
+        if (left == ODD && right == EVEN) return ODD;
+        return TOP;
+    }
+
+    private static Parity evaluateSubstracton(Parity left, Parity right) {
+        return evaluateAddition(left, right);
+    }
+
+    private static Parity evaluateMoltiplication(Parity left, Parity right) {
+        if (left == EVEN || right == EVEN) return EVEN;
+        if (left == ODD && right == ODD) return EVEN;
+        return TOP;
+    }
+
+//    private static Parity evaluateDivision(Parity left, Parity right) {
+//
+//    }
 }

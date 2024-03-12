@@ -19,7 +19,7 @@ class signs {
 	branches(a, b) {
 		def x = 0;
 		if (a > b) 
-           	x = x * 7;
+           	x = -19;
        	else
            	x = -7;
 		def y = x / x;

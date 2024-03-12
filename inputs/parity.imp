@@ -1,0 +1,12 @@
+class signs {
+
+
+	branches(a, b) {
+		def x = 0;
+		if (a > b)
+           	x = 20;
+       	else
+           	x = 9;
+		def y = x / x;
+    }
+}
