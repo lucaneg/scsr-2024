@@ -99,6 +99,11 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
         return BOTTOM;
     }
 
+//    @Override
+//    public Parity evalNullConstant(ProgramPoint pp, SemanticOracle oracle) throws SemanticException {
+//        return TOP;
+//    }
+
     @Override
     public Parity evalNonNullConstant(Constant constant, ProgramPoint pp, SemanticOracle oracle) {
         if (constant.getValue() instanceof Integer) {
@@ -130,7 +135,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
     private static Parity evaluateAddition(Parity left, Parity right) {
         if (left == EVEN && right == EVEN) return EVEN;
-        if (left == ODD && right == ODD) return ODD;
+        if (left == ODD && right == ODD) return EVEN;
         if (left == EVEN && right == ODD) return ODD;
         if (left == ODD && right == EVEN) return ODD;
         return TOP;
@@ -146,7 +151,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
         return TOP;
     }
 
-    private static Parity evaluateDivision(Parity left, Parity right) {
-        return TOP;
-    }
+//    private static Parity evaluateDivision(Parity left, Parity right) {
+//        return TOP;
+//    }
 }
