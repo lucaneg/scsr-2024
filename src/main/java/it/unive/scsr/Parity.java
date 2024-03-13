@@ -1,7 +1,5 @@
 package it.unive.scsr;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import it.unive.lisa.analysis.Lattice;
