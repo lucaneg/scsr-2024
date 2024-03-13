@@ -1,24 +1,23 @@
-    package it.unive.scsr;
+package it.unive.scsr;
 
-    import java.util.Objects;
+import java.util.Objects;
 
-    import it.unive.lisa.analysis.Lattice;
-    import it.unive.lisa.analysis.SemanticException;
-    import it.unive.lisa.analysis.SemanticOracle;
-    import it.unive.lisa.analysis.nonrelational.value.BaseNonRelationalValueDomain;
-    import it.unive.lisa.program.cfg.ProgramPoint;
-    import it.unive.lisa.symbolic.value.Constant;
-    import it.unive.lisa.symbolic.value.operator.AdditionOperator;
-    import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
-    import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
-    import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
-    import it.unive.lisa.symbolic.value.operator.unary.NumericNegation;
-    import it.unive.lisa.symbolic.value.operator.unary.UnaryOperator;
-    import it.unive.lisa.util.representation.StringRepresentation;
-    import it.unive.lisa.util.representation.StructuredRepresentation;
+import it.unive.lisa.analysis.Lattice;
+import it.unive.lisa.analysis.SemanticException;
+import it.unive.lisa.analysis.SemanticOracle;
+import it.unive.lisa.analysis.nonrelational.value.BaseNonRelationalValueDomain;
+import it.unive.lisa.program.cfg.ProgramPoint;
+import it.unive.lisa.symbolic.value.Constant;
+import it.unive.lisa.symbolic.value.operator.AdditionOperator;
+import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
+import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
+import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
+import it.unive.lisa.symbolic.value.operator.unary.NumericNegation;
+import it.unive.lisa.symbolic.value.operator.unary.UnaryOperator;
+import it.unive.lisa.util.representation.StringRepresentation;
+import it.unive.lisa.util.representation.StructuredRepresentation;
 
-    public class Parity implements BaseNonRelationalValueDomain<Parity> {
-
+public class Parity implements BaseNonRelationalValueDomain<Parity> {
     private int value;
 
     private static final Parity TOP     = new Parity(2);
@@ -149,4 +148,4 @@
         return repr;
     }
 
-    }
+}
