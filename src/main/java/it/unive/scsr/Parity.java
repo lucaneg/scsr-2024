@@ -1,28 +1,28 @@
-package it.unive.scsr;
+    package it.unive.scsr;
 
-import java.util.Objects;
+    import java.util.Objects;
 
-import it.unive.lisa.analysis.Lattice;
-import it.unive.lisa.analysis.SemanticException;
-import it.unive.lisa.analysis.SemanticOracle;
-import it.unive.lisa.analysis.nonrelational.value.BaseNonRelationalValueDomain;
-import it.unive.lisa.program.cfg.ProgramPoint;
-import it.unive.lisa.symbolic.value.Constant;
-import it.unive.lisa.symbolic.value.operator.AdditionOperator;
-import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
-import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
-import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
-import it.unive.lisa.symbolic.value.operator.unary.NumericNegation;
-import it.unive.lisa.symbolic.value.operator.unary.UnaryOperator;
-import it.unive.lisa.util.representation.StringRepresentation;
-import it.unive.lisa.util.representation.StructuredRepresentation;
+    import it.unive.lisa.analysis.Lattice;
+    import it.unive.lisa.analysis.SemanticException;
+    import it.unive.lisa.analysis.SemanticOracle;
+    import it.unive.lisa.analysis.nonrelational.value.BaseNonRelationalValueDomain;
+    import it.unive.lisa.program.cfg.ProgramPoint;
+    import it.unive.lisa.symbolic.value.Constant;
+    import it.unive.lisa.symbolic.value.operator.AdditionOperator;
+    import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
+    import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
+    import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
+    import it.unive.lisa.symbolic.value.operator.unary.NumericNegation;
+    import it.unive.lisa.symbolic.value.operator.unary.UnaryOperator;
+    import it.unive.lisa.util.representation.StringRepresentation;
+    import it.unive.lisa.util.representation.StructuredRepresentation;
 
-public class Parity implements BaseNonRelationalValueDomain<Parity> {
+    public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
     private int value;
 
     private static final Parity TOP     = new Parity(2);
-	private static final Parity ODD     = new Parity(1);
+    private static final Parity ODD     = new Parity(1);
     private static final Parity EVEN    = new Parity(0);
     private static final Parity BOTTOM  = new Parity(-1);
 
@@ -35,28 +35,28 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
     }
 
     private Parity evalAdditionOperation(Parity left, Parity right) {
-		Parity result = TOP;
+        Parity result = TOP;
 
         if ((left == EVEN && right == EVEN) || (left == ODD && right == ODD)) {
-			result = EVEN;
+            result = EVEN;
 
-		} else if ((left == ODD && right == EVEN) || (left == EVEN && right == ODD)) {
-			result = ODD;
-		}
+        } else if ((left == ODD && right == EVEN) || (left == EVEN && right == ODD)) {
+            result = ODD;
+        }
 
-		return result;
+        return result;
     }
 
-	private Parity evalMultiplicationOperation(Parity left, Parity right) {
-		Parity result = TOP;
+    private Parity evalMultiplicationOperation(Parity left, Parity right) {
+        Parity result = TOP;
 
         if (left == EVEN || right == EVEN) {
-			result = EVEN;
-		} else if (left == ODD && right == ODD) {
-			result = ODD;
-		}
+            result = EVEN;
+        } else if (left == ODD && right == ODD) {
+            result = ODD;
+        }
 
-		return result;
+        return result;
     }
 
     @Override
@@ -66,7 +66,6 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
     @Override
     public Parity evalNonNullConstant(Constant constant, ProgramPoint pp, SemanticOracle oracle) throws SemanticException {
-        
         if (constant.getValue() instanceof Integer) {
             Integer x = (Integer) constant.getValue();
             return (x % 2 == 0) ? EVEN : ODD;
@@ -87,31 +86,31 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
         } else if (operator instanceof MultiplicationOperator) {
             result = evalMultiplicationOperation(left, right);
-		}
+        }
 
         return result;
     }
 
-	@Override
-	public String toString() {
-		return representation().toString();
-	}
+    @Override
+    public String toString() {
+        return representation().toString();
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(value);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;	
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;	
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
 
-		Parity other = (Parity) obj;
+        Parity other = (Parity) obj;
 
-		return Objects.equals(this.value, other.value);
-	}
+        return Objects.equals(this.value, other.value);
+    }
 
     @Override
     public Parity lubAux(Parity other) throws SemanticException {
@@ -149,5 +148,5 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
         return repr;
     }
-    
-}
+
+    }
