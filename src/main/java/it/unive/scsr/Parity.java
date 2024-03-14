@@ -20,6 +20,17 @@ import it.unive.lisa.util.representation.StructuredRepresentation;
 
 public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
+	/*
+	 * 				 TOP
+	 * 			   	/   \
+	 * 			EVEN	 ODD
+	 * 				\	/
+	 * 			    BOTTOM
+	 * 
+	 * EVEN = { x | x is EVEN }    ex: {-5}{-3}{-1}{1}{3}{5}...
+	 * ODD = { x | x is ODD }    ex: {-4}{-2}{0}{2}{4}...
+	 */
+	
 	private static final Parity BOTTOM = new Parity(-10);
 	private static final Parity EVEN = new Parity(-1);
 	private static final Parity ODD = new Parity(0);
@@ -28,6 +39,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	// this is just needed to distinguish the elements
 	private final int parity;
 	
+	// Constructors
 	public Parity() {
 		this(10);
 	}
@@ -71,7 +83,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		else return TOP;
 	}
 	
-	// In this function I evaluate if, given two elements (the one which call the function and the one passed as parameter)
+	// This function evaluates if, given two elements (the one which call the function and the one passed as parameter)
 	// if the first, so this is less or equal than other
 	// I considered seven cases:
 	// 1. if both elements are TOP the function returns true
@@ -134,6 +146,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		return BOTTOM;
 	}
 	
+	// This function evaluates constants considering two cases, if the constant is divisible by two and if it isn't
 	@Override
 	public Parity evalNonNullConstant(
 			Constant constant,
@@ -150,6 +163,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		return top();
 	}
 	
+	// This function evaluates the negation of the number, so it changes the sign but it doesn't change the Parity value
 	private Parity negate() {
 		if (this == EVEN)
 			return EVEN;
@@ -159,6 +173,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 			return this;
 	}
 	
+	// This function evaluates the unary expressions
 	public Parity evalUnaryExpression(
 			UnaryOperator operator,
 			Parity arg,
@@ -173,6 +188,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		return TOP;
 	}
 
+	// This function evaluates the binary expressions such as addition, subtraction and multiplication
 	public Parity evalBinaryExpression(
 			BinaryOperator operator,
 			Parity left,
