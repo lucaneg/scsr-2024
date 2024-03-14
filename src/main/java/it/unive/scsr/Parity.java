@@ -65,18 +65,14 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
 	@Override
 	public boolean lessOrEqualAux(Parity other) throws SemanticException {
-	    // If 'this' is TOP, it is always less than or equal to any other value.
-	    if (this == TOP) {
+	    if (this == TOP && other == TOP)
 	        return true;
-	    }
-	    // If 'other' is TOP, 'this' can only be less than or equal to TOP.
-	    else if (other == TOP) {
-	        return this == TOP;
-	    }
-	    // If both are EVEN or both are ODD, they are equal, and thus 'this' is less than or equal to 'other'.
-	    else {
+	    else if (this == TOP && other != TOP)
+	    	return false;
+	    else if (this != TOP && other == TOP)
+	    	return true;
+	    else
 	        return this.lessOrEqual(other);
-	    }
 	}
 	
 	/*@Override
