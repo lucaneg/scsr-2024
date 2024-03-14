@@ -65,8 +65,44 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
 	@Override
 	public boolean lessOrEqualAux(Parity other) throws SemanticException {
-		return false;
+	    // If 'this' is TOP, it is always less than or equal to any other value.
+	    if (this == TOP) {
+	        return true;
+	    }
+	    // If 'other' is TOP, 'this' can only be less than or equal to TOP.
+	    else if (other == TOP) {
+	        return this == TOP;
+	    }
+	    // If both are EVEN or both are ODD, they are equal, and thus 'this' is less than or equal to 'other'.
+	    else {
+	        return this.lessOrEqual(other);
+	    }
 	}
+	
+	/*@Override
+	public boolean lessOrEqualAux(Parity other) throws SemanticException {
+	    // If 'this' is TOP, it is always less than or equal to any other value.
+	    if (this == TOP) {
+	        return true;
+	    }
+	    // If 'other' is TOP, 'this' can only be less than or equal to TOP.
+	    else if (other == TOP) {
+	        return this == TOP;
+	    }
+	    // If both are EVEN or both are ODD, they are equal, and thus 'this' is less than or equal to 'other'.
+	    else if ((this == EVEN && other == EVEN) || (this == ODD && other == ODD)) {
+	        return true;
+	    }
+	    // If 'this' is EVEN and 'other' is ODD, 'this' is not less than or equal to 'other'.
+	    else if (this == EVEN && other == ODD) {
+	        return false;
+	    }
+	    // If 'this' is ODD and 'other' is EVEN, 'this' is not less than or equal to 'other'.
+	    else if (this == ODD && other == EVEN) {
+	        return false;
+	    }
+		return false;
+	}*/
 
 	@Override
 	public Parity top() {
@@ -94,6 +130,15 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		return top();
 	}
 	
+	private Parity negate() {
+		if (this == EVEN)
+			return EVEN;
+		else if (this == ODD)
+			return ODD;
+		else
+			return this;
+	}
+	
 	public Parity evalUnaryExpression(
 			UnaryOperator operator,
 			Parity arg,
@@ -103,21 +148,10 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		if (operator instanceof NumericNegation)
 			if (arg == TOP)
 				return TOP;
-			else if (arg == EVEN)
-				return EVEN;
-			else if (arg == ODD)
-				return ODD;
+			else
+				return this.negate();
 		return TOP;
 	}
-	
-	/*private Parity negate() {
-		if (this == EVEN)
-			return EVEN;
-		else if (this == ODD)
-			return ODD;
-		else
-			return this;
-	}*/
 
 	public Parity evalBinaryExpression(
 			BinaryOperator operator,
@@ -159,7 +193,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		return TOP;
 	}
 	
-	public Parity evalBranches (
+	/*public Parity evalBranches (
 			BinaryOperator operator,
 			Parity left,
 			Parity right,
@@ -177,7 +211,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 			SemanticOracle oracle)
 			throws SemanticException {
 		return left.lubAux(right);
-	}
+	}*/
 			
 	// IMPLEMENTATION NOTE:
 	// the code below is outside of the scope of the course. You can uncomment
