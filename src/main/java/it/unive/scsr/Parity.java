@@ -53,23 +53,47 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		Parity other = (Parity) obj;
 		return parity == other.parity;
 	}
-
+	
+	// In this function I find the least upper bound of the two Parity elements, the one which call the function and the one passed as parameter
+	// I considered four main cases:
+	// 1. if both elements are EVEN the least upper bound is EVEN
+	// 2. if both elements are ODD the least upper bound is ODD
+	// 3. if both elements are BOTTOM the least upper bound is BOTTOM
+	// 4. otherwise, if the elements are different (so one EVEN and the other ODD, or vice versa, or one BOTTOM and the other EVEN/ODD, or vice versa) the least upper bound is TOP
 	@Override
 	public Parity lubAux(Parity other) throws SemanticException {
 		if (this == EVEN && other == EVEN)
 			return EVEN;
 		else if (this == ODD && other == ODD)
 			return ODD;
+		else if (this == BOTTOM && other == BOTTOM)
+			return BOTTOM;
 		else return TOP;
 	}
-
+	
+	// In this function I evaluate if, given two elements (the one which call the function and the one passed as parameter)
+	// if the first, so this is less or equal than other
+	// I considered seven cases:
+	// 1. if both elements are TOP the function returns true
+	// 2. if both elements are BOTTOM the function returns true
+	// 3. if one element (this) equals TOP while the other isn't equal to TOP nor BOTTOM the function returns false because the TOP element is greater than the others
+	// 4. if one element (other) equals TOP while the other isn't equal to TOP nor BOTTOM the function returns true because the TOP element is greater than the others
+	// 5. if one element (this) equals BOTTOM while the other isn't equal to TOP nor BOTTOM the function returns false because the TOP element is greater than the others
+	// 6. if one element (other) equals BOTTOM while the other isn't equal to TOP nor BOTTOM the function returns true because the TOP element is greater than the others
+	// 7. if no one element equals TOP the function pass the evaluation to the lessOrEqual function
 	@Override
 	public boolean lessOrEqualAux(Parity other) throws SemanticException {
 	    if (this == TOP && other == TOP)
 	        return true;
-	    else if (this == TOP && other != TOP)
+	    else if (this == BOTTOM && other == BOTTOM)
+	    	return true;
+	    else if (this == TOP && other != TOP && other != BOTTOM)
 	    	return false;
-	    else if (this != TOP && other == TOP)
+	    else if (this != TOP && this != BOTTOM && other == TOP)
+	    	return true;
+	    else if (this == BOTTOM && other != TOP && other != BOTTOM)
+	    	return false;
+	    else if (this != TOP && this != BOTTOM && other == BOTTOM)
 	    	return true;
 	    else
 	        return this.lessOrEqual(other);
