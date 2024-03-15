@@ -2,7 +2,8 @@ package it.unive.scsr;
 
 /**
  * @author Patrick Fabbiani - 869936
- * @version 2.6
+ * @university Ca' Foscari University - Venice (Italy)
+ * @version 2.7.1
  * This is a simulation of an abstract domain representing a parity using LiSA Analyzer library
  */
 
@@ -24,18 +25,24 @@ import it.unive.lisa.symbolic.value.operator.unary.UnaryOperator;
 import it.unive.lisa.util.representation.StringRepresentation;
 import it.unive.lisa.util.representation.StructuredRepresentation;
 
-public class Parity implements BaseNonRelationalValueDomain<Parity> {
+/**
+ * @implNote BaseNonRelationalValueDomain: The purpose of a BaseNonRelationalValueDomain interface would be to define a contract for classes 
+ * that represent non-relational value domains in a database. These domains represent simple, standalone values that do not have any 
+ * inherent relationship to other values in the database.
+ */
 
-	/**
-	 * From top to bottom we have the following representation	
-	 * TOP - (EVEN | ODD) - BOTTOM
-	 * 
-	 * Higher element is TOP which comprehends the sub-levels EVEN and ODD
-	 * The lower level is BOTTOM which comprehends the empty element or if an element has an error
-	 * 
-	 * EVEN = { x | x is EVEN }    ex: {-5}{-3}{-1}{1}{3}{5}...
-	 * ODD = { x | x is ODD }    ex: {-4}{-2}{0}{2}{4}...
-	 */
+/**
+ * From top to bottom we have the following representation	
+ * TOP - (EVEN | ODD) - BOTTOM
+ * 
+ * Higher element is TOP which comprehends the sub-levels EVEN and ODD
+ * The lower level is BOTTOM which comprehends the empty element or if an element has an error
+ * 
+ * EVEN = { x | x is EVEN }    ex: {-5}{-3}{-1}{1}{3}{5}...
+ * ODD = { x | x is ODD }    ex: {-4}{-2}{0}{2}{4}...
+ */
+
+public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	
 	/**
 	 * I defined four Parity elements:
@@ -97,7 +104,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	 * 4. otherwise, if the elements are different (so one EVEN and the other ODD, or vice versa, or one BOTTOM and the other EVEN/ODD, or vice versa) the least upper bound is TOP
 	 * @param a Parity element to compare with the element from which the function is called to determine the least upper bound
 	 * @return a Parity element representing the least upper bound of the two elements in input
-	 * @throws SemanticException
+	 * @throws SemanticException: type of exception that occurs when there is a semantic error in a program
 	*/
 	@Override
 	public Parity lubAux(Parity other) throws SemanticException {
@@ -123,7 +130,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	 * 7. if no one element equals TOP the function pass the evaluation to the lessOrEqual function
 	 * @param a Parity element to compare with the element from which the function is called to determine the less or equal relation
 	 * @return a boolean element that says if the first element is less or equal than the second
-	 * @throws SemanticException
+	 * @throws SemanticException: type of exception that occurs when there is a semantic error in a program
 	*/
 	@Override
 	public boolean lessOrEqualAux(Parity other) throws SemanticException {
@@ -136,9 +143,9 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	    else if (this != TOP && this != BOTTOM && other == TOP)
 	    	return true;
 	    else if (this == BOTTOM && other != TOP && other != BOTTOM)
-	    	return false;
-	    else if (this != TOP && this != BOTTOM && other == BOTTOM)
 	    	return true;
+	    else if (this != TOP && this != BOTTOM && other == BOTTOM)
+	    	return false;
 	    else
 	        return this.lessOrEqual(other);
 	}
@@ -198,7 +205,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	 * This function evaluates the unary expressions (so the negation operator)
 	 * @param a constant, variable whose value cannot be changed after it has been initialized, a program point, specific location in a program where the execution can reach, a semantic oracle, a tool or a component used in program analysis to provide information about the semantics of a program.
 	 * @return the evaluation of the element from which the function is called
-	 * @exception SemanticException
+	 * @exception SemanticException: type of exception that occurs when there is a semantic error in a program
 	 */
 	public Parity evalUnaryExpression(
 			UnaryOperator operator,
@@ -223,7 +230,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	 * I evaluated mainly three operations: addition, subtraction and multiplication (division is not required, but in case of division the function returns TOP)
 	 * @param a constant, variable whose value cannot be changed after it has been initialized, a program point, specific location in a program where the execution can reach, a semantic oracle, a tool or a component used in program analysis to provide information about the semantics of a program.
 	 * @return the evaluation of the result of the binary expression
-	 * @exception SemanticException
+	 * @exception SemanticException: type of exception that occurs when there is a semantic error in a program
 	 */
 	public Parity evalBinaryExpression(
 			BinaryOperator operator,
