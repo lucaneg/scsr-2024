@@ -1,0 +1,38 @@
+{
+  "warnings" : [ ],
+  "files" : [ "js/cytoscape-3.21.1.min.js", "js/cytoscape-graphml-1.0.6-hier.js", "js/jquery-3.0.0.min.js", "report.json", "untyped_cp.f0(cp__this).html", "untyped_cp.f0(cp__this).json", "untyped_cp.f1(cp__this).html", "untyped_cp.f1(cp__this).json", "untyped_cp.f2(cp__this).html", "untyped_cp.f2(cp__this).json", "untyped_cp.f3(cp__this,_untyped_i).html", "untyped_cp.f3(cp__this,_untyped_i).json" ],
+  "info" : {
+    "cfgs" : "4",
+    "duration" : "504ms",
+    "end" : "2024-03-06T18:21:06.980+01:00",
+    "expressions" : "75",
+    "files" : "11",
+    "globals" : "0",
+    "members" : "4",
+    "programs" : "1",
+    "start" : "2024-03-06T18:21:06.476+01:00",
+    "statements" : "29",
+    "units" : "1",
+    "version" : "0.1b9",
+    "warnings" : "0"
+  },
+  "configuration" : {
+    "analysisGraphs" : "HTML",
+    "descendingPhaseType" : "NONE",
+    "dumpForcesUnwinding" : "false",
+    "fixpointWorkingSet" : "DuplicateFreeFIFOWorkingSet",
+    "glbThreshold" : "5",
+    "hotspots" : "unset",
+    "jsonOutput" : "true",
+    "openCallPolicy" : "WorstCasePolicy",
+    "optimize" : "false",
+    "recursionWideningThreshold" : "5",
+    "semanticChecks" : "",
+    "serializeInputs" : "false",
+    "serializeResults" : "true",
+    "syntacticChecks" : "",
+    "useWideningPoints" : "true",
+    "wideningThreshold" : "5",
+    "workdir" : "outputs/cp-eval"
+  }
+}
