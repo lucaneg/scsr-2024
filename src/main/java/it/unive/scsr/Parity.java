@@ -31,12 +31,17 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	 * ODD = { x | x is ODD }    ex: {-4}{-2}{0}{2}{4}...
 	 */
 	
+	// I defined four Parity elements:
+	// - BOTTOM which comprehends the empty element or if an element has an error
+	// - EVEN which is associated to the even numbers
+	// - ODD which is associated to the odd numbers
+	// - TOP which comprehends the sub-levels EVEN and ODD
 	private static final Parity BOTTOM = new Parity(-10);
 	private static final Parity EVEN = new Parity(-1);
 	private static final Parity ODD = new Parity(0);
 	private static final Parity TOP = new Parity(10);
 	
-	// this is just needed to distinguish the elements
+	// This is just needed to distinguish the elements
 	private final int parity;
 	
 	// Constructors
@@ -54,6 +59,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		return Objects.hash(parity);
 	}
 
+	// This method evaluates if two objects are equal so if they represent the same Parity value
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -110,33 +116,8 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	    else
 	        return this.lessOrEqual(other);
 	}
-	
-	/*@Override
-	public boolean lessOrEqualAux(Parity other) throws SemanticException {
-	    // If 'this' is TOP, it is always less than or equal to any other value.
-	    if (this == TOP) {
-	        return true;
-	    }
-	    // If 'other' is TOP, 'this' can only be less than or equal to TOP.
-	    else if (other == TOP) {
-	        return this == TOP;
-	    }
-	    // If both are EVEN or both are ODD, they are equal, and thus 'this' is less than or equal to 'other'.
-	    else if ((this == EVEN && other == EVEN) || (this == ODD && other == ODD)) {
-	        return true;
-	    }
-	    // If 'this' is EVEN and 'other' is ODD, 'this' is not less than or equal to 'other'.
-	    else if (this == EVEN && other == ODD) {
-	        return false;
-	    }
-	    // If 'this' is ODD and 'other' is EVEN, 'this' is not less than or equal to 'other'.
-	    else if (this == ODD && other == EVEN) {
-	        return false;
-	    }
-		return false;
-	}*/
 
-	//This functions returns TOP and BOTTOM
+	//This functions returns TOP and BOTTOM unconditionally
 	@Override
 	public Parity top() {
 		return TOP;
@@ -147,7 +128,11 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		return BOTTOM;
 	}
 	
-	// This function evaluates constants considering two cases, if the constant is divisible by two and if it isn't
+	// This function evaluates constants considering two cases
+	// It just check if the constant is divisible by two and if it isn't
+	// In the positive case the number is EVEN 
+	// (in this case I also check if the number equals zero because zero is even but dividing it by zero it could return error so it would become BOTTOM)
+	// In the other case the number is ODD
 	@Override
 	public Parity evalNonNullConstant(
 			Constant constant,
@@ -156,7 +141,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 			throws SemanticException {
 		if (constant.getValue() instanceof Integer) {
 			int v = (Integer) constant.getValue();
-			if (v % 2 == 0)
+			if (v % 2 == 0 || v == 0)
 				return EVEN;
 			else
 				return ODD;
@@ -174,7 +159,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 			return this;
 	}
 	
-	// This function evaluates the unary expressions
+	// This function evaluates the unary expressions (so the negation operator)
 	public Parity evalUnaryExpression(
 			UnaryOperator operator,
 			Parity arg,
@@ -192,6 +177,9 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	}
 
 	// This function evaluates the binary expressions such as addition, subtraction and multiplication
+	// First I check if the elements are TOP or BOTTOM
+	// If not I evaluate the operator:
+	// I evaluated mainly three operations: addition, subtraction and multiplication (division is not required, but in case of division the function returns TOP)
 	public Parity evalBinaryExpression(
 			BinaryOperator operator,
 			Parity left,
@@ -233,26 +221,6 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		}
 		return TOP;
 	}
-	
-	/*public Parity evalBranches (
-			BinaryOperator operator,
-			Parity left,
-			Parity right,
-			ProgramPoint pp,
-			SemanticOracle oracle)
-			throws SemanticException {
-		return left.lubAux(right);
-	}
-	
-	public Parity evalLoops(
-			BinaryOperator operator,
-			Parity left,
-			Parity right,
-			ProgramPoint pp,
-			SemanticOracle oracle)
-			throws SemanticException {
-		return left.lubAux(right);
-	}*/
 			
 	// IMPLEMENTATION NOTE:
 	// the code below is outside of the scope of the course. You can uncomment
@@ -274,3 +242,51 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		return new StringRepresentation("ODD");
 	}
 }
+
+
+
+
+/*@Override
+public boolean lessOrEqualAux(Parity other) throws SemanticException {
+    // If 'this' is TOP, it is always less than or equal to any other value.
+    if (this == TOP) {
+        return true;
+    }
+    // If 'other' is TOP, 'this' can only be less than or equal to TOP.
+    else if (other == TOP) {
+        return this == TOP;
+    }
+    // If both are EVEN or both are ODD, they are equal, and thus 'this' is less than or equal to 'other'.
+    else if ((this == EVEN && other == EVEN) || (this == ODD && other == ODD)) {
+        return true;
+    }
+    // If 'this' is EVEN and 'other' is ODD, 'this' is not less than or equal to 'other'.
+    else if (this == EVEN && other == ODD) {
+        return false;
+    }
+    // If 'this' is ODD and 'other' is EVEN, 'this' is not less than or equal to 'other'.
+    else if (this == ODD && other == EVEN) {
+        return false;
+    }
+	return false;
+}
+
+public Parity evalBranches (
+		BinaryOperator operator,
+		Parity left,
+		Parity right,
+		ProgramPoint pp,
+		SemanticOracle oracle)
+		throws SemanticException {
+	return left.lubAux(right);
+}
+
+public Parity evalLoops(
+		BinaryOperator operator,
+		Parity left,
+		Parity right,
+		ProgramPoint pp,
+		SemanticOracle oracle)
+		throws SemanticException {
+	return left.lubAux(right);
+}*/
