@@ -21,11 +21,11 @@ import it.unive.lisa.util.representation.StructuredRepresentation;
 public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
 	/*
-	 * 				 TOP
-	 * 			   	/   \
-	 * 			EVEN	 ODD
-	 * 				\	/
-	 * 			    BOTTOM
+	 * From top to bottom we have the following representation	
+	 * TOP - (EVEN | ODD) - BOTTOM
+	 * 
+	 * Higher element is TOP which comprehends the sub-levels EVEN and ODD
+	 * The lower level is BOTTOM which comprehends the empty element or if an element has an error
 	 * 
 	 * EVEN = { x | x is EVEN }    ex: {-5}{-3}{-1}{1}{3}{5}...
 	 * ODD = { x | x is ODD }    ex: {-4}{-2}{0}{2}{4}...
@@ -136,6 +136,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		return false;
 	}*/
 
+	//This functions returns TOP and BOTTOM
 	@Override
 	public Parity top() {
 		return TOP;
@@ -180,7 +181,9 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 			ProgramPoint pp,
 			SemanticOracle oracle)
 			throws SemanticException {
-		if (operator instanceof NumericNegation)
+		if (arg == TOP) return TOP;
+		else if (arg == BOTTOM) return BOTTOM;
+		else if (operator instanceof NumericNegation)
 			if (arg == TOP)
 				return TOP;
 			else
@@ -196,7 +199,9 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 			ProgramPoint pp,
 			SemanticOracle oracle)
 			throws SemanticException {
-		if (operator instanceof AdditionOperator) {
+		if (left == TOP || right == TOP) return TOP;
+		else if (left == BOTTOM || right == BOTTOM) return BOTTOM;
+		else if (operator instanceof AdditionOperator) {
 			if (left == EVEN && right == EVEN) {
 				return EVEN;
 			} else if (left == ODD && right == ODD) {
