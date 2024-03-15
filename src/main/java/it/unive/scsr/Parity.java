@@ -114,7 +114,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
     }
 
     private Parity evalAdditionSubtraction(Parity left, Parity right) {
-        if (left == EVEN && right == EVEN || left == ODD && right == ODD) return EVEN;
+        if ((left == EVEN && right == EVEN) || (left == ODD && right == ODD)) return EVEN;
         else return ODD;
     }
 
