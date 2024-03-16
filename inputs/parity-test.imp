@@ -1,0 +1,30 @@
+class parity {
+	f0() {
+		def x = 1;
+		def y = 2;
+		def z = x + y;
+		def d = 5 * 7;
+		def w = x / y;
+
+		return;
+	}
+	
+	f1() {
+		def xy = 0;
+		def b = -1;
+		def y = 3;
+		def z = 5;
+		def n = 7 * 3;
+		def a = xy + y;
+		
+		if (xy == 0) { 
+			xy = z;
+			b = xy + y;
+		} else {
+			xy = 1;
+			b = xy + y;
+		}
+		
+		return;
+	}
+}
