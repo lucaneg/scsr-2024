@@ -20,10 +20,10 @@ import it.unive.lisa.util.representation.StructuredRepresentation;
 
 public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
-	public static final Parity EVEN = new Parity(3);
-	public static final Parity ODD = new Parity(2);
-	public static final Parity TOP = new Parity(0);
-	public static final Parity BOTTOM = new Parity(1);
+	public static final Parity TOP = new Parity(1);
+	public static final Parity BOTTOM = new Parity(-1);
+	public static final Parity EVEN = new Parity(2);
+	public static final Parity ODD = new Parity(3);
 
 	private final int parity;
 
