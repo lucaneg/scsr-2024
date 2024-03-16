@@ -108,7 +108,7 @@ public class Parity
 					if(left == ODD && left == right){
 						return ODD;
 					}
-					else if(left == EVEN && left == right){
+					else if(left == EVEN || right == EVEN){
 						return EVEN;
 					}
 					return top();
@@ -123,7 +123,7 @@ public class Parity
 	public Parity evalNonNullConstant(Constant constant, ProgramPoint pp, SemanticOracle oracle)
 			throws SemanticException {
 		if (constant.getValue() instanceof Integer) {
-			int value = (int) constant.getValue();
+			int value = (Integer) constant.getValue();
 			return value % 2 == 0 ? EVEN : ODD;
 		}
 		return top();
