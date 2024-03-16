@@ -64,10 +64,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 			Constant constant,
 			ProgramPoint pp,
 			SemanticOracle oracle) {
-		if (constant.getValue() instanceof Integer i) {
-			return i % 2 == 0 ? EVEN : ODD;
-		}
-		return top();
+		return constant.getValue() instanceof Integer i ? i % 2 == 0 ? EVEN : ODD : top();
 	}
 
 	public boolean isEven() {
@@ -84,9 +81,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 			Parity arg,
 			ProgramPoint pp,
 			SemanticOracle oracle) {
-		if (operator == NumericNegation.INSTANCE)
-			return arg;
-		return top();
+		return operator == NumericNegation.INSTANCE ? arg : top();
 	}
 
 	@Override
