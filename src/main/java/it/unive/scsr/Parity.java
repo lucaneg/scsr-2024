@@ -88,10 +88,10 @@ public class Parity
 				if (operator instanceof AdditionOperator || operator instanceof SubtractionOperator){
 					if (left == ODD){
 						if (right == ODD){
-							return ODD;
+							return EVEN;
 						}
 						if (right == EVEN){
-							return EVEN;
+							return ODD;
 						}
 					}
 					else if(left == EVEN){
