@@ -34,11 +34,18 @@ class parity {
 		def d = i / j;
 	}
 	
-	basic_2(){
+	basic_1(){
 		def g = -6;
 		def h = 0;
 		def i = -g;
 		def s = -h;
+	}
+	
+	basic_2(){
+		def x = 2;
+		def y = 3;
+		def z = x + y +2;
+		def p = x * y - z;
 	}
 	
 	branches(a, b) {
