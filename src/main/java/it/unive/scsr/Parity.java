@@ -74,6 +74,13 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		this.parity = parity;
 	}
 	
+	/**
+	 * This implementation of hashCode() is important for the correct functioning of collections that use hashing, 
+	 * such as HashSet and HashMap. When objects are stored in these collections, they are placed into buckets based on their hash codes. 
+	 * If two objects are considered equal (as determined by the equals() method), they must return the same hash code. 
+	 * This method ensures that the hash code is based on the parity field, which means that two objects with the same parity 
+	 * value will have the same hash code, and thus will be placed into the same bucket in a hash-based collection.
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(parity);
@@ -288,51 +295,3 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		return new StringRepresentation("ODD");
 	}
 }
-
-
-
-
-/*@Override
-public boolean lessOrEqualAux(Parity other) throws SemanticException {
-    // If 'this' is TOP, it is always less than or equal to any other value.
-    if (this == TOP) {
-        return true;
-    }
-    // If 'other' is TOP, 'this' can only be less than or equal to TOP.
-    else if (other == TOP) {
-        return this == TOP;
-    }
-    // If both are EVEN or both are ODD, they are equal, and thus 'this' is less than or equal to 'other'.
-    else if ((this == EVEN && other == EVEN) || (this == ODD && other == ODD)) {
-        return true;
-    }
-    // If 'this' is EVEN and 'other' is ODD, 'this' is not less than or equal to 'other'.
-    else if (this == EVEN && other == ODD) {
-        return false;
-    }
-    // If 'this' is ODD and 'other' is EVEN, 'this' is not less than or equal to 'other'.
-    else if (this == ODD && other == EVEN) {
-        return false;
-    }
-	return false;
-}
-
-public Parity evalBranches (
-		BinaryOperator operator,
-		Parity left,
-		Parity right,
-		ProgramPoint pp,
-		SemanticOracle oracle)
-		throws SemanticException {
-	return left.lubAux(right);
-}
-
-public Parity evalLoops(
-		BinaryOperator operator,
-		Parity left,
-		Parity right,
-		ProgramPoint pp,
-		SemanticOracle oracle)
-		throws SemanticException {
-	return left.lubAux(right);
-}*/

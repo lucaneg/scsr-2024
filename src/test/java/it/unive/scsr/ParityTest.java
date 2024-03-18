@@ -1,5 +1,12 @@
 package it.unive.scsr;
 
+/**
+ * @author Patrick Fabbiani - 869936
+ * @university Ca' Foscari University - Venice (Italy)
+ * @version 1.1.2
+ * This is the test class of the simulation of the abstract domain
+ */
+
 import org.junit.Test;
 
 import it.unive.lisa.AnalysisException;
