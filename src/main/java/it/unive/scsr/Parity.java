@@ -9,6 +9,7 @@ import it.unive.lisa.program.cfg.ProgramPoint;
 import it.unive.lisa.symbolic.value.Constant;
 import it.unive.lisa.symbolic.value.ValueExpression;
 import it.unive.lisa.symbolic.value.operator.AdditionOperator;
+import it.unive.lisa.symbolic.value.operator.DivisionOperator;
 import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
 import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
 import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
@@ -129,6 +130,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
         if (operator instanceof AdditionOperator) return evaluateAddition(left, right);
         if (operator instanceof SubtractionOperator) return evaluateSubstracton(left, right);
         if (operator instanceof MultiplicationOperator) return evaluateMoltiplication(left, right);
+        if (operator instanceof DivisionOperator) return evaluateDivision(left, right);
         return TOP;
 
     }
@@ -151,7 +153,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
         return TOP;
     }
 
-//    private static Parity evaluateDivision(Parity left, Parity right) {
-//        return TOP;
-//    }
+    private static Parity evaluateDivision(Parity left, Parity right) {
+        return TOP;
+    }
 }
