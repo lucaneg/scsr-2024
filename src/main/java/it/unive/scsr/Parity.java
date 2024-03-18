@@ -79,12 +79,28 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	@Override
 	public Parity lubAux(Parity other) throws SemanticException {
 		
+		if(this.equals(EVEN) && other.equals(EVEN))
+			return EVEN;
+		else if (this.equals(ODD) && other.equals(ODD))
+			return ODD;
+		else if (this.equals(BOTTOM) && other.equals(BOTTOM))
+			return BOTTOM;
+		else
 		return TOP;
 	}
 
 	@Override
 	public boolean lessOrEqualAux(Parity other) throws SemanticException {
 		
+		if(this.equals(EVEN) && other.equals(EVEN))
+			return true;
+		
+		else if(this.equals(ODD) && other.equals(ODD))
+			return true;
+		
+		else if(this.equals(TOP) && other.equals(TOP))
+			return true;
+			
 		return false;
 	}
 
@@ -118,6 +134,9 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	
 	public Parity evalUnaryExpression(UnaryOperator operator,Parity argument,ProgramPoint pp,SemanticOracle oracle) throws SemanticException
 	{
+		if(argument.equals(BOTTOM))
+			return BOTTOM;
+		
 		if(operator instanceof NumericNegation)
 		{
 			if(argument==TOP)
@@ -135,6 +154,9 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	
 	public Parity evalBinaryExpression(BinaryOperator operator,Parity lhs,Parity rhs,ProgramPoint pp,SemanticOracle oracle) throws SemanticException
 	{
+		if(lhs.equals(BOTTOM) && rhs.equals(BOTTOM))
+			return BOTTOM;
+			
 		if(operator instanceof AdditionOperator || operator instanceof SubtractionOperator )
 		{
 			if(lhs==EVEN && rhs==EVEN)
@@ -151,11 +173,22 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		}
 		else if(operator instanceof MultiplicationOperator)
 		{
+			if(lhs==EVEN && rhs==EVEN)
+				return EVEN;
 			
+			else if((lhs==EVEN && rhs==ODD) || (lhs==ODD && rhs==EVEN))
+				return EVEN;
+			
+			else if (lhs==ODD && rhs==ODD)
+				return ODD;
+			
+			else
+				return TOP;
 			
 		}
 		else if(operator instanceof DivisionOperator)
-		{
+		{	
+						
 			return TOP;
 			
 		}
