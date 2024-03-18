@@ -7,6 +7,15 @@ class parity {
    		return b;
     }
     
+    loop_1(){
+    	def a = 5;
+    	def k = 2;
+    	while(a > k)
+    		def h = k * a;
+    		a = a - 1;
+    	return a;
+    }
+    
 	basic() {
 		def i = 2;
 		def j = -11;
