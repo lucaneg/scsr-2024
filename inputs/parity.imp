@@ -1,0 +1,14 @@
+class ParityTestCases {
+
+    evenPlusEven() {
+        def x = 2;
+        def y = 4;
+        def z = x + y;
+    }
+
+    oddPlusOdd() {
+        def a = 1;
+        def b = 3;
+        def c = a + b;
+    }
+}
