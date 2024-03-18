@@ -86,7 +86,6 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
     @Override
     public boolean lessOrEqualAux(Parity other) throws SemanticException {
-        System.out.println("SONO QUAAAAAAAAA MINORE O UGUALEEEEE " + other.type + " " + other.type.getValue());
         return false;
     }
 
