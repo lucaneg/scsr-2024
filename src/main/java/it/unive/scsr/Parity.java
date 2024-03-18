@@ -26,6 +26,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
     // Constructor
     private Parity(int value) {
+
         this.value = value;
     }
 
@@ -43,11 +44,13 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
     @Override
     public Parity top() {
+
         return TOP;
     }
 
     @Override
     public Parity bottom() {
+
         return BOTTOM;
     }
 
