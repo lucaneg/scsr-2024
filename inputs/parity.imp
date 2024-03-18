@@ -16,12 +16,29 @@ class parity {
     	return a;
     }
     
+    loop_2(){
+    	def j = 3;
+    	def m = 130;
+    	while(j < m){
+    		j = j * 2;
+    	}
+    	return j;
+    }
+    
 	basic() {
 		def i = 2;
 		def j = -11;
 		def a = i + j;
 		def s = i - j;
 		def m = i * j;
+		def d = i / j;
+	}
+	
+	basic_2(){
+		def g = -6;
+		def h = 0;
+		def i = -g;
+		def s = -h;
 	}
 	
 	branches(a, b) {

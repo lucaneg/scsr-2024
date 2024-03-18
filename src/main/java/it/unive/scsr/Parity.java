@@ -214,10 +214,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 		if (arg == TOP) return TOP;
 		else if (arg == BOTTOM) return BOTTOM;
 		else if (operator instanceof NumericNegation)
-			if (arg == TOP)
-				return TOP;
-			else
-				return this.negate();
+			return arg.negate();
 		return TOP;
 	}
 
