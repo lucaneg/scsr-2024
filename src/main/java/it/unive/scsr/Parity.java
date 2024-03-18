@@ -17,18 +17,18 @@ import java.util.Objects;
 
 public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
-	public static final Parity TOP = new Parity((byte) 0);
-	public static final Parity ODD = new Parity((byte) 2);
-	public static final Parity EVEN = new Parity((byte) 3);
-	public static final Parity BOTTOM = new Parity((byte) 1);
+	public static final Parity TOP = new Parity("TOP");
+	public static final Parity ODD = new Parity("ODD");
+	public static final Parity EVEN = new Parity("EVEN");
+	public static final Parity BOTTOM = new Parity("BOTTOM");
 
-	private final byte parity;
+	private final String parity;
 
 	public Parity() {
-		this((byte) 0);
+		this("");
 	}
 
-	public Parity(byte parity) {
+	public Parity(String parity) {
 		this.parity = parity;
 	}
 
@@ -98,10 +98,8 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 			return left.equals(right) ? EVEN : ODD;
 		else if(operator instanceof MultiplicationOperator)
 			return left.isEven() || right.isEven() ? EVEN : ODD;
-		else if(operator instanceof ModuloOperator)
-			return TOP;
 
-		return TOP;
+		return top();
 	}
 
 	@Override
