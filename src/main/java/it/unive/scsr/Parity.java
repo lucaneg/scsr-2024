@@ -33,7 +33,7 @@ import it.unive.lisa.util.representation.StructuredRepresentation;
 
 /**
  * From top to bottom we have the following representation	
- * TOP - (EVEN | ODD) - BOTTOM
+ * TOP - {EVEN , ODD} - BOTTOM
  * 
  * Higher element is TOP which comprehends the sub-levels EVEN and ODD
  * The lower level is BOTTOM which comprehends the empty element or if an element has an error
@@ -47,8 +47,8 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	/**
 	 * I defined four Parity elements:
 	 * - BOTTOM which comprehends the empty element or if an element has an error
-	 * - EVEN which is associated to the even numbers
-	 * - ODD which is associated to the odd numbers
+	 * - EVEN which is associated to the even numbers    ex: {-5}{-3}{-1}{1}{3}{5}..
+	 * - ODD which is associated to the odd numbers    ex: {-4}{-2}{0}{2}{4}...
 	 * - TOP which comprehends the sub-levels EVEN and ODD
 	 */
 	private static final Parity BOTTOM = new Parity(-10);
