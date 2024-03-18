@@ -91,9 +91,6 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	@Override
 	public Parity evalBinaryExpression(BinaryOperator operator, Parity left, Parity right, ProgramPoint pp,
 			SemanticOracle oracle) throws SemanticException {
-		if (left.isTop() || right.isTop()) {
-			return TOP;
-		}
 		if (operator instanceof AdditionOperator || operator instanceof SubtractionOperator) {
 			return (left.equals(right)) ? EVEN : ODD;
 		}
