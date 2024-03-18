@@ -85,6 +85,9 @@ public class Parity
 	@Override
 	public Parity evalBinaryExpression(BinaryOperator operator, Parity left, Parity right, ProgramPoint pp,
 			SemanticOracle oracle) throws SemanticException {
+				
+				if (left == BOTTOM || right == BOTTOM) return bottom();
+				
 				if (operator instanceof AdditionOperator || operator instanceof SubtractionOperator){
 					if (left == ODD){
 						if (right == ODD){
@@ -122,6 +125,7 @@ public class Parity
 	@Override
 	public Parity evalNonNullConstant(Constant constant, ProgramPoint pp, SemanticOracle oracle)
 			throws SemanticException {
+
 		if (constant.getValue() instanceof Integer) {
 			int value = (Integer) constant.getValue();
 			return value % 2 == 0 ? EVEN : ODD;
@@ -137,6 +141,9 @@ public class Parity
 	@Override
 	public Parity evalUnaryExpression(UnaryOperator operator, Parity arg, ProgramPoint pp, SemanticOracle oracle)
 			throws SemanticException {
+		
+		if (arg == BOTTOM) return bottom();
+		
 		if (operator instanceof NumericNegation)
 			return arg;
 		return top();
