@@ -28,11 +28,11 @@ import it.unive.lisa.util.representation.StructuredRepresentation;
 /**
  * @implNote BaseNonRelationalValueDomain: The purpose of a BaseNonRelationalValueDomain interface would be to define a contract for classes 
  * that represent non-relational value domains in a database. These domains represent simple, standalone values that do not have any 
- * inherent relationship to other values in the database.
+ * inherent relationship to other values in the database
  */
 
 /**
- * From top to bottom we have the following representation	
+ * From top to bottom we have the following representation:
  * TOP - {EVEN , ODD} - BOTTOM
  * 
  * Higher element is TOP which comprehends the sub-levels EVEN and ODD
@@ -46,10 +46,11 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	
 	/**
 	 * I defined four Parity elements:
-	 * - BOTTOM which comprehends the empty element or if an element has an error
-	 * - EVEN which is associated to the even numbers    ex: {-5}{-3}{-1}{1}{3}{5}..
-	 * - ODD which is associated to the odd numbers    ex: {-4}{-2}{0}{2}{4}...
+	 * - BOTTOM which comprehends the empty element or if an element has an error;
+	 * - EVEN which is associated to the even numbers;    ex: {-5}{-3}{-1}{1}{3}{5}..
+	 * - ODD which is associated to the odd numbers;    ex: {-4}{-2}{0}{2}{4}...
 	 * - TOP which comprehends the sub-levels EVEN and ODD
+	 * To each element I associated a value (-10,-1,0,10) to make future evaluations
 	 */
 	private static final Parity BOTTOM = new Parity(-10);
 	private static final Parity EVEN = new Parity(-1);
@@ -98,9 +99,9 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	/** 
 	 * In this function I find the least upper bound of the two Parity elements, the one which call the function and the one passed as parameter
 	 * I considered four main cases:
-	 * 1. if both elements are EVEN the least upper bound is EVEN
-	 * 2. if both elements are ODD the least upper bound is ODD
-	 * 3. if both elements are BOTTOM the least upper bound is BOTTOM
+	 * 1. if both elements are EVEN the least upper bound is EVEN;
+	 * 2. if both elements are ODD the least upper bound is ODD;
+	 * 3. if both elements are BOTTOM the least upper bound is BOTTOM;
 	 * 4. otherwise, if the elements are different (so one EVEN and the other ODD, or vice versa, or one BOTTOM and the other EVEN/ODD, or vice versa) the least upper bound is TOP
 	 * @param a Parity element to compare with the element from which the function is called to determine the least upper bound
 	 * @return a Parity element representing the least upper bound of the two elements in input
@@ -118,15 +119,14 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	}
 	
 	/**
-	 * This function evaluates if, given two elements (the one which call the function and the one passed as parameter)
-	 * if the first, so this is less or equal than other
+	 * This function evaluates if, given two elements (the one which call the function and the one passed as parameter) if the first, so this, is less or equal than other
 	 * I considered seven cases:
-	 * 1. if both elements are TOP the function returns true
-	 * 2. if both elements are BOTTOM the function returns true
-	 * 3. if one element (this) equals TOP while the other isn't equal to TOP nor BOTTOM the function returns false because the TOP element is greater than the others
-	 * 4. if one element (other) equals TOP while the other isn't equal to TOP nor BOTTOM the function returns true because the TOP element is greater than the others
-	 * 5. if one element (this) equals BOTTOM while the other isn't equal to TOP nor BOTTOM the function returns false because the TOP element is greater than the others
-	 * 6. if one element (other) equals BOTTOM while the other isn't equal to TOP nor BOTTOM the function returns true because the TOP element is greater than the others
+	 * 1. if both elements are TOP the function returns true,
+	 * 2. if both elements are BOTTOM the function returns true,
+	 * 3. if one element (this) equals TOP while the other isn't equal to TOP nor BOTTOM the function returns false because the TOP element is greater than the others,
+	 * 4. if one element (other) equals TOP while the other isn't equal to TOP nor BOTTOM the function returns true because the TOP element is greater than the others,
+	 * 5. if one element (this) equals BOTTOM while the other isn't equal to TOP nor BOTTOM the function returns false because the TOP element is greater than the others,
+	 * 6. if one element (other) equals BOTTOM while the other isn't equal to TOP nor BOTTOM the function returns true because the TOP element is greater than the others,
 	 * 7. if no one element equals TOP the function pass the evaluation to the lessOrEqual function
 	 * @param a Parity element to compare with the element from which the function is called to determine the less or equal relation
 	 * @return a boolean element that says if the first element is less or equal than the second
@@ -164,10 +164,8 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	}
 	
 	/**
-	 * This function evaluates constants considering two cases
-	 * It just check if the constant is divisible by two and if it isn't
-	 * In the positive case the number is EVEN 
-	 * (in this case I also check if the number equals zero because zero is even but dividing it by zero it could return error so it would become BOTTOM)
+	 * This function evaluates constants considering two cases: divisible by two or not
+	 * In the positive case the number is EVEN (in this case I also check if the number equals zero because zero is even but dividing it by zero it could return error so it would become BOTTOM)
 	 * In the other case the number is ODD
 	 * @param a constant, variable whose value cannot be changed after it has been initialized, a program point, specific location in a program where the execution can reach, a semantic oracle, a tool or a component used in program analysis to provide information about the semantics of a program.
 	 * @return a Parity element representing the evaluation of the constant
@@ -226,8 +224,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 	/**
 	 * This function evaluates the binary expressions such as addition, subtraction and multiplication
 	 * First I check if the elements are TOP or BOTTOM
-	 * If not I evaluate the operator:
-	 * I evaluated mainly three operations: addition, subtraction and multiplication (division is not required, but in case of division the function returns TOP)
+	 * If not I evaluate the operator evaluating three operations: addition, subtraction and multiplication (division is not required, but in case of division the function returns TOP)
 	 * @param a constant, variable whose value cannot be changed after it has been initialized, a program point, specific location in a program where the execution can reach, a semantic oracle, a tool or a component used in program analysis to provide information about the semantics of a program.
 	 * @return the evaluation of the result of the binary expression
 	 * @exception SemanticException: type of exception that occurs when there is a semantic error in a program
