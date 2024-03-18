@@ -7,12 +7,34 @@ class parity {
    		return b;
     }
     
+	loop_2() {
+		def x = 1;
+		def y = 0;
+		while (y < 10) {
+			y = y + x;
+			y = y - x;
+			y = y * x;
+			y = y / x;
+		}
+		return y;
+	}
+
 	basic() {
 		def i = 2;
 		def j = -10;
+		def k = 3;
+		def o = 5;
 		def a = i + j;
 		def s = i - j;
 		def m = i * j;
+		def m1 = 10 * 2;
+		def m2 = 10 * 3;
+		def m3 = 7 * 3;
+		m1 = i * 2;
+		m2 = i * 3;
+		m3 = i * i;
+		def m4 = k * k;
+		def m5 = o * k;
 	}
 	
 	branches(a, b) {

@@ -130,6 +130,11 @@ public class Parity
 	}
 
 	@Override
+	public Parity evalNullConstant(ProgramPoint pp, SemanticOracle oracle) throws SemanticException {
+		return top();
+	}
+
+	@Override
 	public Parity evalUnaryExpression(UnaryOperator operator, Parity arg, ProgramPoint pp, SemanticOracle oracle)
 			throws SemanticException {
 		if (operator instanceof NumericNegation)
