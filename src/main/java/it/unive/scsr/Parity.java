@@ -137,7 +137,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
             return TOP;
         if (this == BOTTOM || other == BOTTOM)
             return BOTTOM;
-        if ((this == EVEN && other == EVEN) || (this == ODD && other == ODD))
+        if ((this == EVEN && other == EVEN))
             return EVEN;
         return ODD;
     }
