@@ -26,7 +26,6 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
     // Constructor
     private Parity(int value) {
-
         this.value = value;
     }
 
@@ -44,13 +43,11 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
     @Override
     public Parity top() {
-
         return TOP;
     }
 
     @Override
     public Parity bottom() {
-
         return BOTTOM;
     }
 
@@ -168,11 +165,9 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
         return new StringRepresentation("ODD");
     }
 
-
     // Custom toString() method for debugging purposes
 
     @Override
-
     public String toString() {
         if (this == TOP) {
             return "#TOP#";
@@ -185,6 +180,29 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
         }
     }
 
+    // Custom hashCode() method
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + value;
+        return result;
+    }
+
+    // Custom equals() method
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Parity other = (Parity) obj;
+        return this.value == other.value;
+    }
 
     // Main method for testing purposes
 
