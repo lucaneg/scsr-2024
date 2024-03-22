@@ -1,0 +1,38 @@
+{
+  "warnings" : [ ],
+  "files" : [ "js/cytoscape-3.21.1.min.js", "js/cytoscape-graphml-1.0.6-hier.js", "js/jquery-3.0.0.min.js", "report.json", "untyped_parity.f0(parity__this).html", "untyped_parity.f0(parity__this).json", "untyped_parity.f1(parity__this).html", "untyped_parity.f1(parity__this).json", "untyped_parity.f2(parity__this,_untyped_a,_untyped_b).html", "untyped_parity.f2(parity__this,_untyped_a,_untyped_b).json", "untyped_parity.f4(parity__this,_untyped_b).html", "untyped_parity.f4(parity__this,_untyped_b).json" ],
+  "info" : {
+    "cfgs" : "4",
+    "duration" : "579ms",
+    "end" : "2024-03-21T18:30:12.193+01:00",
+    "expressions" : "64",
+    "files" : "11",
+    "globals" : "0",
+    "members" : "4",
+    "programs" : "1",
+    "start" : "2024-03-21T18:30:11.614+01:00",
+    "statements" : "25",
+    "units" : "1",
+    "version" : "0.1b9",
+    "warnings" : "0"
+  },
+  "configuration" : {
+    "analysisGraphs" : "HTML",
+    "descendingPhaseType" : "NONE",
+    "dumpForcesUnwinding" : "false",
+    "fixpointWorkingSet" : "DuplicateFreeFIFOWorkingSet",
+    "glbThreshold" : "5",
+    "hotspots" : "unset",
+    "jsonOutput" : "true",
+    "openCallPolicy" : "WorstCasePolicy",
+    "optimize" : "false",
+    "recursionWideningThreshold" : "5",
+    "semanticChecks" : "",
+    "serializeInputs" : "false",
+    "serializeResults" : "true",
+    "syntacticChecks" : "",
+    "useWideningPoints" : "true",
+    "wideningThreshold" : "5",
+    "workdir" : "outputs/parity-eval"
+  }
+}
