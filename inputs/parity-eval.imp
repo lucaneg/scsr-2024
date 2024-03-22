@@ -1,0 +1,36 @@
+class parity {    
+	f0() {
+		def i = 2;
+		def j = 10;
+		def a = i + j;
+		def s = i - j;
+		def m = i * j;
+		def n = -i;
+	}
+    
+	f1() {
+		def i = 2;
+		def j = 11;
+		def a = i + j;
+		def s = i - j;
+		def m = i * j;
+		def n = -i;
+	}
+	
+	f2(a, b) {
+		def x = 0;
+		if (a > b) 
+           	x = x * 2;
+       	else
+           	x = x - 7;
+		def y = -x;
+		def z = y + y;
+    }
+    
+	f4(b) {
+		def c = 0;
+   		while (b) 
+        	c = c + 2;
+   		return c;
+    }
+}
