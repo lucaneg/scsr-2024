@@ -103,9 +103,9 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
 
         if (operator instanceof AdditionOperator || operator instanceof SubtractionOperator) {
             if(left == ODD && right == ODD || left == EVEN && right == EVEN)
-                pRes = ODD;
-            else if (left == ODD && right == EVEN || left == EVEN && right == ODD)
                 pRes = EVEN;
+            else if (left == ODD && right == EVEN || left == EVEN && right == ODD)
+                pRes = ODD;
         } else if (operator instanceof MultiplicationOperator) {
             if(left == ODD && right == ODD)
                 pRes = ODD;
