@@ -1,7 +1,0 @@
-loop() {
-		def c = 1;
-		def b = 0;
-   		while (b < 10) 
-        	b = b + c;
-   		return b;
-    }
