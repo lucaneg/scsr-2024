@@ -1,6 +1,6 @@
 class reachingDefinitions {
 	test1() {
-		def i = 5;
+		def i = 6;
 		def x = "s";
 	}
 	
