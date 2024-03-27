@@ -159,7 +159,7 @@ public class UpperBounds
 	@Override
 	public Iterator<Identifier> iterator() {
 		if(bounds == null)
-			Collections.emptyIterator();
+			return Collections.emptyIterator();
 		
 		return bounds.iterator();
 	}
@@ -213,5 +213,33 @@ public class UpperBounds
 		return other.bounds.containsAll(bounds) ? other : TOP;
 	}
 
+	/**
+	 * Checks if this bounds contains a specified identifier of a program
+	 * variable.
+	 * 
+	 * @param id the identifier to check
+	 * 
+	 * @return {@code true} if this bounds contains the specified identifier;
+	 *             otherwise, {@code false}.
+	 */
+	public boolean contains(
+			Identifier id) {
+		return bounds != null && bounds.contains(id);
+	}
 
+	/**
+	 * Adds the specified identifier of a program variable in the bounds.
+	 * 
+	 * @param id the identifier to add in the bounds.
+	 * 
+	 * @return the updated bounds.
+	 */
+	public UpperBounds add(
+			Identifier id) {
+		Set<Identifier> res = new HashSet<>();
+		if (!isTop() && !isBottom())
+			res.addAll(bounds);
+		res.add(id);
+		return new UpperBounds(res);
+	}
 }
