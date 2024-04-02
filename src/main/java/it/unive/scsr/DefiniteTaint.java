@@ -3,7 +3,7 @@ package it.unive.scsr;
 /**
  * @author Patrick Fabbiani - 869936
  * @university Ca' Foscari University - Venice (Italy)
- * @version 2.0.1
+ * @version 1.1.3
  * This is a simulation of an abstract domain representing the complete Taint using LiSA Analyzer library
  */
 
