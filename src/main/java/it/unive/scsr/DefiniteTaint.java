@@ -142,6 +142,8 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	
 	/**
 	 * This function checks if the element is Taint
+	 * @return If the current object is the same as TAINT, the method returns true, 
+	 * indicating that the object is considered "always tainted". Otherwise, it returns false.
 	 */
 	@Override
 	public boolean isAlwaysTainted() {
@@ -150,6 +152,8 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	
 	/**
 	 * This function checks if the element is TOP, so it would be possibly tainted
+	 * @return If the current object is the same as TOP, the method returns true, 
+	 * indicating that the object is considered "tainted". Otherwise, it returns false.
 	 */
 	@Override
 	public boolean isPossiblyTainted() {
@@ -159,7 +163,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	/**
 	 * This function evaluates the binary expressions such as addition, subtraction and multiplication
 	 * First I check if the elements are TOP or BOTTOM
-	 * If not I evaluate the operator evaluating three operations: addition, subtraction and multiplication (division is not required, but in case of division the function returns TOP)
+	 * If not I evaluate the operator evaluating three operations: addition, subtraction and multiplication
 	 * @param a constant, variable whose value cannot be changed after it has been initialized, a program point, specific location in a program where the execution can reach, a semantic oracle, a tool or a component used in program analysis to provide information about the semantics of a program.
 	 * @return the evaluation of the result of the binary expression
 	 * @exception SemanticException: type of exception that occurs when there is a semantic error in a program
@@ -173,7 +177,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 			throws SemanticException {
 			if (left.isTop() || right.isTop()) return TOP;
 			else if (left.isBottom() || right.isBottom()) return BOTTOM;
-			else if (operator instanceof AdditionOperator) {
+			else if ((operator instanceof AdditionOperator) || (operator instanceof SubtractionOperator) || (operator instanceof MultiplicationOperator)){
 				if (left.isAlwaysTainted() && right.isAlwaysTainted()) {
 					return TAINT;
 				} else if (left.isAlwaysClean() && right.isAlwaysClean()) {
@@ -181,27 +185,6 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 				} else if (!(left.equals(right))) {
 					return TAINT;
 				}
-			}
-			else if (operator instanceof SubtractionOperator) {
-				if (left.isAlwaysTainted() && right.isAlwaysTainted()) {
-					return TAINT;
-				} else if (left.isAlwaysClean() && right.isAlwaysClean()) {
-					return CLEAN;
-				} else if (!(left.equals(right))) {
-					return TAINT;
-				}
-			}
-			else if (operator instanceof MultiplicationOperator) {
-				if (left.isAlwaysTainted() && right.isAlwaysTainted()) {
-					return TAINT;
-				} else if (left.isAlwaysClean() && right.isAlwaysClean()) {
-					return CLEAN;
-				} else if (!(left.equals(right))) {
-					return TAINT;
-				}
-			}
-			else if (operator instanceof DivisionOperator) {
-				return TOP;
 			}
 			return TOP;
 	}
