@@ -15,6 +15,7 @@ public class Taint extends BaseTaint<Taint> {
 	private static final Taint CLEAN = new Taint(false);
 	private static final Taint BOTTOM = new Taint(null);
 	
+	
 	Boolean taint;
 	
 	public Taint() {
