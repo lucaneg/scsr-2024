@@ -17,7 +17,7 @@ import it.unive.lisa.program.Program;
 import it.unive.lisa.program.Unit;
 import it.unive.lisa.program.cfg.CodeMember;
 import it.unive.lisa.program.cfg.Parameter;
-import it.unive.scsr.checkers.TaintChecker;
+import it.unive.scsr.checkers.DefiniteTaintChecker;
 
 public class DefiniteTaintTest {
 	
@@ -26,11 +26,10 @@ public class DefiniteTaintTest {
 	String[] sanitizers = new String[] {"sanitizer1", "sanitizer2"};
 	String[] sinks = new String[] {"sink1", "sinks"};
 	
-
 	@Test
 	public void testDefiniteTaint() throws ParsingException, AnalysisException {
 		// we parse the program to get the CFG representation of the code in it
-		Program program = IMPFrontend.processFile("inputs/definitetaint.imp");
+		Program program = IMPFrontend.processFile("inputs/definite.imp");
 
 		// we load annotation for identify sources, sanitizer, and sinks during the analysis and checker execution
 		loadAnnotations(program);
@@ -48,45 +47,47 @@ public class DefiniteTaintTest {
 		conf.jsonOutput= true;
 
 		// we specify the analysis that we want to execute
-		
-		 conf.abstractState = DefaultConfiguration.simpleState(
+		conf.abstractState = DefaultConfiguration.simpleState(
 				DefaultConfiguration.defaultHeapDomain(),
 				new ValueEnvironment<>(new DefiniteTaint()),
 				DefaultConfiguration.defaultTypeDomain());
 		 
-		 // we specify to perform an interprocedural analysis (require to recognize calls to sources, sanitizers, and sinks)
-		 conf.interproceduralAnalysis = new ContextBasedAnalysis<>(FullStackToken.getSingleton());
+		// we specify to perform an interprocedural analysis (require to recognize calls to sources, sanitizers, and sinks)
+		conf.interproceduralAnalysis = new ContextBasedAnalysis<>(FullStackToken.getSingleton());
 		 
-		 // the TaintChecker is executed after the Taint analysis and it checks if a tainted value is flowed in a sink
-		 conf.semanticChecks.add(new TaintChecker());
+		// the TaintChecker is executed after the Taint analysis and it checks if a tainted value is flowed in a sink
+		conf.semanticChecks.add(new DefiniteTaintChecker());
 		 
 		// we instantiate LiSA with our configuration
 		LiSA lisa = new LiSA(conf);
 		
-
+		System.out.println("Running LiSA analysis on program: " + program.getName());
+		System.out.println("LiSA configuration: " + conf.toString());
+		
 		// finally, we tell LiSA to analyze the program
 		lisa.run(program);
 	}
 
-
 	private void loadAnnotations(Program program) {
-		
-		for(Unit unit : program.getUnits()) {
-			if(unit instanceof ClassUnit) {
-				ClassUnit cunit = (ClassUnit) unit;
-				for(CodeMember cm : cunit.getInstanceCodeMembers(false)) {
-					if(isSource(cm))
-						cm.getDescriptor().getAnnotations().addAnnotation(Taint.TAINTED_ANNOTATION);
-					else if(isSanitizer(cm)) 
-						cm.getDescriptor().getAnnotations().addAnnotation(Taint.CLEAN_ANNOTATION);
-					else if(isSink(cm))
-						for(Parameter param : cm.getDescriptor().getFormals()) {
-							param.addAnnotation(TaintChecker.SINK_ANNOTATION);
-						}		
-				}	
-			}
-		}
-		
+	    for(Unit unit : program.getUnits()) {
+	        if(unit instanceof ClassUnit) {
+	            ClassUnit cunit = (ClassUnit) unit;
+	            for(CodeMember cm : cunit.getInstanceCodeMembers(false)) {
+	                if(isSource(cm)) {
+	                    cm.getDescriptor().getAnnotations().addAnnotation(Taint.TAINTED_ANNOTATION);
+	                    System.out.println("Added TAINTED_ANNOTATION to " + cm.getDescriptor().getName());
+	                } else if(isSanitizer(cm)) {
+	                    cm.getDescriptor().getAnnotations().addAnnotation(Taint.CLEAN_ANNOTATION);
+	                    System.out.println("Added CLEAN_ANNOTATION to " + cm.getDescriptor().getName());
+	                } else if(isSink(cm)) {
+	                    for(Parameter param : cm.getDescriptor().getFormals()) {
+	                        param.addAnnotation(DefiniteTaintChecker.SINK_ANNOTATION);
+	                        System.out.println("Added SINK_ANNOTATION to parameter " + param.getName() + " of " + cm.getDescriptor().getName());
+	                    }
+	                }
+	            }
+	        }
+	    }
 	}
 
 
@@ -97,7 +98,6 @@ public class DefiniteTaintTest {
 		}
 		return false;
 	}
-	
 
 	private boolean isSanitizer(CodeMember cm) {
 		for(String signatureName : sanitizers) {
@@ -107,7 +107,6 @@ public class DefiniteTaintTest {
 		return false;
 	}
 	
-
 	private boolean isSink(CodeMember cm) {
 		for(String signatureName : sinks) {
 			if(cm.getDescriptor().getName().equals(signatureName))

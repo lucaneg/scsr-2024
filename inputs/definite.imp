@@ -1,4 +1,4 @@
-class definitetaint {
+class definite {
 
 	source1(){
 		return -99;
