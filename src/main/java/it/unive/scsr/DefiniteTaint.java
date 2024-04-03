@@ -64,6 +64,8 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	
 	/**
 	 * Constructors
+	 * I defined two constructors, one empty constructor for the simple object declaration 
+	 * and one with the parameter to initialize also the Boolean object
 	 */
 	public DefiniteTaint() {
 		this(true);
@@ -94,7 +96,8 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	}
 
 	/**
-	 * This function evaluates if, given two elements (the one which call the function and the one passed as parameter) if the first, so this, is less or equal than other
+	 * This function evaluates if, given two elements (the one which call the function and the one passed as parameter) 
+	 * if the first, so this, is less or equal than other
 	 * I considered four cases:
 	 * 1. if this is BOTTOM the function returns true,
 	 * 2. if this is CLEAN the function returns true if other equals CLEAN or if other equals BOTTOM, otherwise it returns false,
@@ -166,7 +169,9 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	 * This function evaluates the binary expressions such as addition, subtraction and multiplication
 	 * First I check if the elements are TOP or BOTTOM
 	 * If not I evaluate the operator evaluating three operations: addition, subtraction and multiplication
-	 * @param a constant, variable whose value cannot be changed after it has been initialized, a program point, specific location in a program where the execution can reach, a semantic oracle, a tool or a component used in program analysis to provide information about the semantics of a program.
+	 * @param a constant, variable whose value cannot be changed after it has been initialized, a program point, 
+	 * specific location in a program where the execution can reach, a semantic oracle, a tool or a component 
+	 * used in program analysis to provide information about the semantics of a program.
 	 * @return the evaluation of the result of the binary expression
 	 * @exception SemanticException: type of exception that occurs when there is a semantic error in a program
 	 */
@@ -179,7 +184,8 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 			throws SemanticException {
 			if (left.isTop() || right.isTop()) return TOP;
 			else if (left.isBottom() || right.isBottom()) return BOTTOM;
-			else if ((operator instanceof AdditionOperator) || (operator instanceof SubtractionOperator) || (operator instanceof MultiplicationOperator)){
+			else if ((operator instanceof AdditionOperator) || (operator instanceof SubtractionOperator) || 
+					(operator instanceof MultiplicationOperator) || (operator instanceof DivisionOperator)){
 				if (left.isAlwaysTainted() && right.isAlwaysTainted()) {
 					return TAINT;
 				} else if (left.isAlwaysClean() && right.isAlwaysClean()) {
