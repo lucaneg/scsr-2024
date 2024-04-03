@@ -3,7 +3,7 @@ package it.unive.scsr;
 /**
  * @author Patrick Fabbiani - 869936
  * @university Ca' Foscari University - Venice (Italy)
- * @version 1.1.3
+ * @version 1.2.1
  * This is a simulation of an abstract domain representing the complete Taint using LiSA Analyzer library
  */
 
@@ -18,6 +18,8 @@ import it.unive.lisa.symbolic.value.operator.DivisionOperator;
 import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
 import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
 import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
+import it.unive.lisa.symbolic.value.operator.unary.NumericNegation;
+import it.unive.lisa.symbolic.value.operator.unary.UnaryOperator;
 import it.unive.lisa.util.representation.StringRepresentation;
 import it.unive.lisa.util.representation.StructuredRepresentation;
 
@@ -88,9 +90,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
             return TAINT;
         } else if (this == CLEAN && other == CLEAN) {
             return CLEAN;
-        } else if (this == BOTTOM && other == BOTTOM)
-			return BOTTOM;
-		else return TOP;	
+        } else return TOP;	
 	}
 
 	/**
@@ -110,8 +110,10 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
             return true;
         } else if ((this == CLEAN || this == TAINT) && other == TOP) {
             return true;
-        }  else if (this == TOP) {
+        } else if ((this == CLEAN || this == TAINT) && other == BOTTOM) {
             return false;
+        }  else if (this == TOP) {
+            return other == TOP;
         } else {
         	return this.lessOrEqual(other);
         }
