@@ -37,8 +37,8 @@ public class ParityTaskEvaluation {
 		conf.analysisGraphs = GraphType.HTML;
 		conf.abstractState = DefaultConfiguration.simpleState(
 				DefaultConfiguration.defaultHeapDomain(),
-				new ValueEnvironment<>(new ParitySolution()),
-				DefaultConfiguration.defaultTypeDomain());
+				new ValueEnvironment<>(new Parity()),
+                DefaultConfiguration.defaultTypeDomain());
 
 		try {
 			FileManager.forceDeleteFolder(conf.workdir);
