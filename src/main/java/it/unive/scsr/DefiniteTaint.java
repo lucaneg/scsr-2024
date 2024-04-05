@@ -13,88 +13,84 @@ import it.unive.lisa.util.representation.StructuredRepresentation;
 
 
 public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
+	private static final DefiniteTaint TOP = new DefiniteTaint((byte) 3);
+	private static final DefiniteTaint CLEAN = new DefiniteTaint((byte) 2);
+	private static final DefiniteTaint TAINTED = new DefiniteTaint((byte) 1);
+	private static final DefiniteTaint BOTTOM = new DefiniteTaint((byte) 0);
+
+	byte definiteTaint;
+
+	public DefiniteTaint() {
+		this((byte) 3);
+	}
+
+	public DefiniteTaint(byte taint) {
+		this.definiteTaint = taint;
+	}
 
 	@Override
 	public DefiniteTaint lubAux(DefiniteTaint other) throws SemanticException {
-		// TODO: to implement
-		return null;
+		return TOP;
 	}
 
 	@Override
 	public boolean lessOrEqualAux(DefiniteTaint other) throws SemanticException {
-		// TODO: to implement
 		return false;
 	}
 
 	@Override
 	public DefiniteTaint top() {
-		// TODO: to implement
-		return null;
+		return TOP;
 	}
 
 	@Override
 	public DefiniteTaint bottom() {
-		// TODO: to implement
-		return null;
+		return BOTTOM;
 	}
 
 	@Override
 	protected DefiniteTaint tainted() {
-		// TODO: to implement
-		return null;
+		return TAINTED;
 	}
 
 	@Override
 	protected DefiniteTaint clean() {
-		// TODO: to implement
-		return null;
+		return CLEAN;
 	}
 
 	@Override
 	public boolean isAlwaysTainted() {
-		// TODO: to implement
-		return false;
+		return this == TAINTED;
 	}
 
 	@Override
 	public boolean isPossiblyTainted() {
-		// TODO: to implement
-		return false;
+		return this == TOP; //|| this == TAINTED;
 	}
-	
+	@Override
 	public DefiniteTaint evalBinaryExpression(
 			BinaryOperator operator,
-			ThreeLevelsTaint left,
-			ThreeLevelsTaint right,
+			DefiniteTaint left,
+			DefiniteTaint right,
 			ProgramPoint pp,
 			SemanticOracle oracle)
 			throws SemanticException {
-		// TODO: to implement
-		return null;
+		if(left == TAINTED || right == TAINTED)
+			return TAINTED;
+		if(left == TOP || right == TOP)
+			return TOP;
+		return CLEAN;
 	}
 	
 	@Override
 	public DefiniteTaint wideningAux(
 			DefiniteTaint other)
 			throws SemanticException {
-		// TODO: to implement
-		return null;
+		return TOP;
 	}
-
-
-	// IMPLEMENTATION NOTE:
-	// the code below is outside of the scope of the course. You can uncomment
-	// it to get your code to compile. Be aware that the code is written
-	// expecting that you have constants for identifying top, bottom, even and
-	// odd elements as we saw for the sign domain: if you name them differently,
-	// change also the code below to make it work by just using the name of your
-	// choice. If you use methods instead of constants, change == with the
-	// invocation of the corresponding method
-	
 		@Override
 	public StructuredRepresentation representation() {
-		// return this == BOTTOM ? Lattice.bottomRepresentation() : this == TOP ? Lattice.topRepresentation() : this == CLEAN ? new StringRepresentation("_") : new StringRepresentation("#");
-		return null;
+		return this == BOTTOM ? Lattice.bottomRepresentation() : this == TOP ? Lattice.topRepresentation() : this == CLEAN ? new StringRepresentation("_") : new StringRepresentation("#");
 	}
 		
 		
