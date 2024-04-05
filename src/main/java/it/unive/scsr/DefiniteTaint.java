@@ -18,8 +18,6 @@ import it.unive.lisa.symbolic.value.operator.DivisionOperator;
 import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
 import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
 import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
-import it.unive.lisa.symbolic.value.operator.unary.NumericNegation;
-import it.unive.lisa.symbolic.value.operator.unary.UnaryOperator;
 import it.unive.lisa.util.representation.StringRepresentation;
 import it.unive.lisa.util.representation.StructuredRepresentation;
 
@@ -30,6 +28,9 @@ import it.unive.lisa.util.representation.StructuredRepresentation;
  * approach to tracking and analyzing the taint of data as it flows through a program.
  * ValueDomain" refers to the set of possible values that a variable, data structure, or dataset can hold,
  * defining the range of valid or meaningful values within a specific context.
+ * Sanitizer "converts" a taint value in a clean value 
+ * Source is where the input came from (any sources)
+ * Sink is an arrival point from the variables
  */
 
 /**
