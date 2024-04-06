@@ -93,7 +93,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 
     @Override
     public boolean isAlwaysTainted() {
-        return false;
+        return this == TAINT;
     }
 
     @Override
