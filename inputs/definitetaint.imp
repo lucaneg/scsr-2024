@@ -45,6 +45,27 @@ class taint {
 		this.sink1(m); // the value may be tainted
 	}
 
+	basic4() {
+		def t = this.source1();
+		def x = 0;
+		def s = this.source1();
 
+
+
+		if (x > 0) {
+			s = this.sanitizer1(t);
+		}
+		else {
+			s = t;
+		}
+		
+		def mt = x + t;
+
+		def c = this.sanitizer1(mt);
+
+		s = mt * c;
+
+		this.sink1(s);
+	}
 
 }

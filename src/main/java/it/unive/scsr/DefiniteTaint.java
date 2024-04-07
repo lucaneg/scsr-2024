@@ -108,10 +108,11 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	
 		@Override
 	public StructuredRepresentation representation() {
-		return this == BOTTOM ? 
-			Lattice.bottomRepresentation() : this == MAYBETAINTED ? 
-				Lattice.topRepresentation() : this == CLEAN ? 
-					new StringRepresentation("_") : new StringRepresentation("#");
+		return 
+				this == BOTTOM ? Lattice.bottomRepresentation() : 
+				this == MAYBETAINTED ? Lattice.topRepresentation() : 
+				this == CLEAN ? new StringRepresentation("_") : 
+					new StringRepresentation("#");
 	}
 		
 		
