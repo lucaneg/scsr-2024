@@ -20,7 +20,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	private static final DefiniteTaint CLEAN = new DefiniteTaint(0);
 	private static final DefiniteTaint BOTTOM = new DefiniteTaint(-10);
 
- 	Integer value;
+ 	private final Integer value;
 
 	public DefiniteTaint() {
 		this(10);
@@ -93,9 +93,8 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	public DefiniteTaint wideningAux(
 			DefiniteTaint other)
 			throws SemanticException {
-		return this.lub(other);
+		return top();
 	}
-
 
 	// IMPLEMENTATION NOTE:
 	// the code below is outside of the scope of the course. You can uncomment
@@ -114,6 +113,31 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 				this == CLEAN ? new StringRepresentation("_") : 
 					new StringRepresentation("#");
 	}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((value == null) ? 0 : value.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			DefiniteTaint other = (DefiniteTaint) obj;
+			if (value == null) {
+				if (other.value != null)
+					return false;
+			} else if (!value.equals(other.value))
+				return false;
+			return true;
+		}
 		
 		
 	
