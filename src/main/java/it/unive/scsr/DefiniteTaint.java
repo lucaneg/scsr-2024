@@ -11,74 +11,86 @@ import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
 import it.unive.lisa.util.representation.StringRepresentation;
 import it.unive.lisa.util.representation.StructuredRepresentation;
 
+import java.util.Objects;
+
 
 public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
+	private static final DefiniteTaint MAYBETAINTED = new DefiniteTaint(10);
+	private static final DefiniteTaint TAINTED = new DefiniteTaint(1);
+	private static final DefiniteTaint CLEAN = new DefiniteTaint(0);
+	private static final DefiniteTaint BOTTOM = new DefiniteTaint(-10);
+	Integer value;
 
+	public DefiniteTaint() {
+		this(10);
+	}
+	public DefiniteTaint(Integer value) {
+		this.value = value;
+	}
 	@Override
 	public DefiniteTaint lubAux(DefiniteTaint other) throws SemanticException {
-		// TODO: to implement
-		return null;
+		return top();
 	}
 
 	@Override
 	public boolean lessOrEqualAux(DefiniteTaint other) throws SemanticException {
-		// TODO: to implement
 		return false;
 	}
 
 	@Override
 	public DefiniteTaint top() {
-		// TODO: to implement
-		return null;
+		return MAYBETAINTED;
 	}
 
 	@Override
 	public DefiniteTaint bottom() {
-		// TODO: to implement
-		return null;
+		return BOTTOM;
 	}
 
 	@Override
 	protected DefiniteTaint tainted() {
-		// TODO: to implement
-		return null;
+		return TAINTED;
 	}
 
 	@Override
 	protected DefiniteTaint clean() {
-		// TODO: to implement
-		return null;
+		return CLEAN;
 	}
 
 	@Override
 	public boolean isAlwaysTainted() {
-		// TODO: to implement
-		return false;
+		return this == tainted();
 	}
 
 	@Override
 	public boolean isPossiblyTainted() {
-		// TODO: to implement
-		return false;
+		return this == top();
 	}
 	
 	public DefiniteTaint evalBinaryExpression(
 			BinaryOperator operator,
-			ThreeLevelsTaint left,
-			ThreeLevelsTaint right,
+			DefiniteTaint  left,
+			DefiniteTaint  right,
 			ProgramPoint pp,
 			SemanticOracle oracle)
 			throws SemanticException {
-		// TODO: to implement
-		return null;
+		if (operator instanceof BinaryOperator) {
+			if (left == TAINTED || right == TAINTED) {
+				return tainted();
+			} else if (left == MAYBETAINTED || right == MAYBETAINTED) {
+				return top();
+			} else {
+				return clean();
+			}
+		}
+		return top();
 	}
 	
 	@Override
 	public DefiniteTaint wideningAux(
 			DefiniteTaint other)
 			throws SemanticException {
-		// TODO: to implement
-		return null;
+		return this.lub(other);
 	}
 
 
@@ -91,12 +103,30 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	// choice. If you use methods instead of constants, change == with the
 	// invocation of the corresponding method
 	
-		@Override
+	@Override
 	public StructuredRepresentation representation() {
-		// return this == BOTTOM ? Lattice.bottomRepresentation() : this == TOP ? Lattice.topRepresentation() : this == CLEAN ? new StringRepresentation("_") : new StringRepresentation("#");
-		return null;
+		StructuredRepresentation res;
+		if (this == BOTTOM)
+			res = Lattice.bottomRepresentation();
+		else if (this == MAYBETAINTED)
+			res = Lattice.topRepresentation();
+		else if (this == CLEAN)
+			res = new StringRepresentation("_");
+		else
+			res = new StringRepresentation("#");
+		return res;
 	}
-		
-		
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		DefiniteTaint that = (DefiniteTaint) o;
+		return Objects.equals(value, that.value);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(value);
+	}
 }
