@@ -13,72 +13,80 @@ import it.unive.lisa.util.representation.StructuredRepresentation;
 
 
 public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
+	private static final DefiniteTaint TAINTED = new DefiniteTaint("TAINTED");
+	private static final DefiniteTaint CLEAN = new DefiniteTaint("CLEAN");
+	private static final DefiniteTaint BOTTOM = new DefiniteTaint("BOTTOM");
+	private static final DefiniteTaint TOP = new DefiniteTaint("TOP");
+	String taint;
+
+	public DefiniteTaint(){
+		this("TOP");
+	}
+	public DefiniteTaint(String taint) {
+		this.taint = taint;
+	}
 
 	@Override
 	public DefiniteTaint lubAux(DefiniteTaint other) throws SemanticException {
-		// TODO: to implement
-		return null;
+		return TOP;
 	}
 
 	@Override
 	public boolean lessOrEqualAux(DefiniteTaint other) throws SemanticException {
-		// TODO: to implement
 		return false;
 	}
 
 	@Override
 	public DefiniteTaint top() {
-		// TODO: to implement
-		return null;
+		return TOP;
 	}
 
 	@Override
 	public DefiniteTaint bottom() {
-		// TODO: to implement
-		return null;
+		return BOTTOM;
 	}
 
 	@Override
 	protected DefiniteTaint tainted() {
-		// TODO: to implement
-		return null;
+		return TAINTED;
 	}
 
 	@Override
 	protected DefiniteTaint clean() {
-		// TODO: to implement
-		return null;
+		return CLEAN;
 	}
 
 	@Override
 	public boolean isAlwaysTainted() {
-		// TODO: to implement
-		return false;
+		return this == TAINTED;
 	}
 
 	@Override
 	public boolean isPossiblyTainted() {
-		// TODO: to implement
-		return false;
+		return this == TOP;
 	}
 	
 	public DefiniteTaint evalBinaryExpression(
 			BinaryOperator operator,
-			ThreeLevelsTaint left,
-			ThreeLevelsTaint right,
+			DefiniteTaint left,
+			DefiniteTaint right,
 			ProgramPoint pp,
 			SemanticOracle oracle)
 			throws SemanticException {
-		// TODO: to implement
-		return null;
+		if (left == TAINTED || right == TAINTED)
+			return TAINTED;
+
+		if (left == TOP || right == TOP)
+			return TOP;
+
+		return CLEAN;
 	}
 	
 	@Override
 	public DefiniteTaint wideningAux(
 			DefiniteTaint other)
 			throws SemanticException {
-		// TODO: to implement
-		return null;
+		return TOP;
 	}
 
 
@@ -93,8 +101,29 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	
 		@Override
 	public StructuredRepresentation representation() {
-		// return this == BOTTOM ? Lattice.bottomRepresentation() : this == TOP ? Lattice.topRepresentation() : this == CLEAN ? new StringRepresentation("_") : new StringRepresentation("#");
-		return null;
+		return this == BOTTOM ? Lattice.bottomRepresentation() : this == TOP ? Lattice.topRepresentation() : this == CLEAN ? new StringRepresentation("_") : new StringRepresentation("#");
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + taint.hashCode();
+		return result;
+	}
+
+	@Override
+	public boolean equals(
+			Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DefiniteTaint other = (DefiniteTaint) obj;
+		if (taint.hashCode() != other.taint.hashCode())
+			return false;
+		return true;
 	}
 		
 		
