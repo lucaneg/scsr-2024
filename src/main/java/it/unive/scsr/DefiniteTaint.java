@@ -14,15 +14,20 @@ import it.unive.lisa.util.representation.StructuredRepresentation;
 public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 
 
-	private final String TOP = "TOP";
-	private final String TAINT = "TAINT";
-	private final String CLEAN = "CLEAN";
-	private final String BOTTOM = "BOTTOM";
+	private final String TOP_s = "TOP";
+	private final String TAINT_s = "TAINT";
+	private final String CLEAN_s = "CLEAN";
+	private final String BOTTOM_s = "BOTTOM";
+
+	private final DefiniteTaint TOP = new DefiniteTaint(TOP_s);
+	private final DefiniteTaint TAINT = new DefiniteTaint(TAINT_s);
+	private final DefiniteTaint CLEAN = new DefiniteTaint(CLEAN_s);
+	private final DefiniteTaint BOTTOM = new DefiniteTaint(BOTTOM_s);
 
 	private final String type;
 
 	public DefiniteTaint() {
-		this("TAINT");
+		this("TOP");
 	}
 
 	public DefiniteTaint(String type) {
@@ -31,7 +36,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 
 	@Override
 	public DefiniteTaint lubAux(DefiniteTaint other) throws SemanticException {
-		return new DefiniteTaint(TOP);
+		return TOP;
 	}
 
 	@Override
@@ -41,32 +46,32 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 
 	@Override
 	public DefiniteTaint top() {
-		return new DefiniteTaint(TOP);
+		return TOP;
 	}
 
 	@Override
 	public DefiniteTaint bottom() {
-		return new DefiniteTaint(BOTTOM);
+		return BOTTOM;
 	}
 
 	@Override
 	protected DefiniteTaint tainted() {
-		return new DefiniteTaint(TAINT);
+		return TAINT;
 	}
 
 	@Override
 	protected DefiniteTaint clean() {
-		return new DefiniteTaint(CLEAN);
+		return CLEAN;
 	}
 
 	@Override
 	public boolean isAlwaysTainted() {
-		return type.equals(TAINT);
+		return this == TAINT;
 	}
 
 	@Override
 	public boolean isPossiblyTainted() {
-		return type.equals(TOP);
+		return this == TOP;
 	}
 
 	@Override
@@ -77,11 +82,11 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 			ProgramPoint pp,
 			SemanticOracle oracle)
 			throws SemanticException {
-		String result = CLEAN;
+		String result = CLEAN_s;
 		if (left.isAlwaysTainted() || right.isAlwaysTainted()) {
-			result = TAINT;
+			result = TAINT_s;
 		} else if (left.isPossiblyTainted() || right.isPossiblyTainted()) {
-			result = TOP;
+			result = TOP_s;
 		}
 		return new DefiniteTaint(result);
 	}
@@ -90,20 +95,20 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	public DefiniteTaint wideningAux(
 			DefiniteTaint other)
 			throws SemanticException {
-		return new DefiniteTaint(TOP);
+		return TOP;
 	}
 
 	@Override
 	public StructuredRepresentation representation() {
 		// return this == BOTTOM ? Lattice.bottomRepresentation() : this == TOP ? Lattice.topRepresentation() : this == CLEAN ? new StringRepresentation("_") : new StringRepresentation("#");
 		switch(this.type) {
-			case BOTTOM:
+			case BOTTOM_s:
 				return Lattice.bottomRepresentation();
-			case TOP:
+			case TOP_s:
 				return Lattice.topRepresentation();
-			case CLEAN:
+			case CLEAN_s:
 				return new StringRepresentation("_");
-			case TAINT:
+			case TAINT_s:
 				return new StringRepresentation("#");
 		}
 		return null;
