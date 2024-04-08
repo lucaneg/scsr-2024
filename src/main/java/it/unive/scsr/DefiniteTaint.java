@@ -20,7 +20,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	private int taint;
 
 	public DefiniteTaint() {
-		this(3);
+		this(1);
 	}
 
 	public DefiniteTaint(int taint) {
