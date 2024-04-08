@@ -13,11 +13,41 @@ import it.unive.lisa.util.representation.StructuredRepresentation;
 
 
 public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
+	private static final DefiniteTaint TAINT = new DefiniteTaint(1);
+	private static final DefiniteTaint CLEAN = new DefiniteTaint(0);
+	private static final DefiniteTaint BOTTOM = new DefiniteTaint(-10);
+	private static final DefiniteTaint TOP = new DefiniteTaint(10);
+
+	private final int taint;
+
+	public DefiniteTaint(int taint) {
+		this.taint = taint;
+	}
+	public DefiniteTaint() {
+		this(10);
+	}
+
+	@Override
+	public int hashCode() {
+		return 31 + this.taint;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		else if (obj == null || this.getClass() != obj.getClass())
+			return false;
+		else {
+			DefiniteTaint other = (DefiniteTaint) obj;
+			return this.taint == other.taint;
+		}
+	}
 
 	@Override
 	public DefiniteTaint lubAux(DefiniteTaint other) throws SemanticException {
 		// TODO: to implement
-		return null;
+		return TOP;
 	}
 
 	@Override
@@ -29,48 +59,54 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	@Override
 	public DefiniteTaint top() {
 		// TODO: to implement
-		return null;
+		return TOP;
 	}
 
 	@Override
 	public DefiniteTaint bottom() {
 		// TODO: to implement
-		return null;
+		return BOTTOM;
 	}
 
 	@Override
 	protected DefiniteTaint tainted() {
 		// TODO: to implement
-		return null;
+		return TAINT;
 	}
 
 	@Override
 	protected DefiniteTaint clean() {
 		// TODO: to implement
-		return null;
+		return CLEAN;
 	}
 
 	@Override
 	public boolean isAlwaysTainted() {
 		// TODO: to implement
-		return false;
+		return this == TAINT;
 	}
 
 	@Override
 	public boolean isPossiblyTainted() {
 		// TODO: to implement
-		return false;
+		return this == TOP;
 	}
 	
 	public DefiniteTaint evalBinaryExpression(
 			BinaryOperator operator,
-			ThreeLevelsTaint left,
-			ThreeLevelsTaint right,
+			DefiniteTaint left,
+			DefiniteTaint right,
 			ProgramPoint pp,
 			SemanticOracle oracle)
 			throws SemanticException {
 		// TODO: to implement
-		return null;
+		if (left == TAINT || right == TAINT)
+			return TAINT;
+
+		if (left == TOP || right == TOP)
+			return TOP;
+
+		return CLEAN;
 	}
 	
 	@Override
@@ -78,7 +114,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 			DefiniteTaint other)
 			throws SemanticException {
 		// TODO: to implement
-		return null;
+		return TOP;
 	}
 
 
@@ -93,8 +129,8 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	
 		@Override
 	public StructuredRepresentation representation() {
-		// return this == BOTTOM ? Lattice.bottomRepresentation() : this == TOP ? Lattice.topRepresentation() : this == CLEAN ? new StringRepresentation("_") : new StringRepresentation("#");
-		return null;
+		 return this == BOTTOM ? Lattice.bottomRepresentation() : this == TOP ? Lattice.topRepresentation() : this == CLEAN ? new StringRepresentation("_") : new StringRepresentation("#");
+		//return null;
 	}
 		
 		
