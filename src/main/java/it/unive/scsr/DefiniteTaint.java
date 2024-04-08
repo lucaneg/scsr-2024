@@ -228,8 +228,8 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	 * This method define the representation of each element defining the following definitions
 	 * BOTTOM represents the BOTTOM element
 	 * TOP represents the TOP element
-	 * _ represents the CLEAN element
-	 * # represents the TAINT element
+	 * _ (underscore) represents the CLEAN element
+	 * # (Number sign) represents the TAINT element
 	 */
 	@Override
 	public StructuredRepresentation representation() {
