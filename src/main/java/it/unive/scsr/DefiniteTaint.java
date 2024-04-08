@@ -51,8 +51,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	 * - CLEAN represents data that is considered safe and trusted, typically because it has been validated or sanitized against potential threats. 
 	 *   Clean data can be safely used in operations without the risk of introducing security vulnerabilities;
 	 * - TOP which comprehends the sub-levels TAINT and CLEAN
-	 */
-	
+	 */	
 	private static final DefiniteTaint TOP = new DefiniteTaint(true);
 	private static final DefiniteTaint TAINT = new DefiniteTaint(true);
 	private static final DefiniteTaint CLEAN = new DefiniteTaint(false);
@@ -124,7 +123,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	}
 	
 	/**
-	 * This functions returns TOP, BOTTOM, TAINT and CLEAN unconditionally
+	 * This functions returns TOP, BOTTOM, TAINT and CLEAN element unconditionally
 	 */
 	@Override
 	public DefiniteTaint top() {
@@ -147,7 +146,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	}
 	
 	/**
-	 * This function checks if the element is Taint
+	 * This function checks if the element is always Taint (so it can't be Clean otherwise it would be Top) 
 	 * @return If the current object is the same as TAINT, the method returns true, 
 	 * indicating that the object is considered "always tainted". Otherwise, it returns false.
 	 */
@@ -157,7 +156,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	}
 	
 	/**
-	 * This function checks if the element is TOP, so it would be possibly tainted
+	 * This function checks if the element is TOP, so it would be possibly tainted (Taint or Clean)
 	 * @return If the current object is the same as TOP, the method returns true, 
 	 * indicating that the object is considered "tainted". Otherwise, it returns false.
 	 */
@@ -217,7 +216,6 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 		return lubAux(other);
 	}
 
-
 	// IMPLEMENTATION NOTE:
 	// the code below is outside of the scope of the course. You can uncomment
 	// it to get your code to compile. Be aware that the code is written
@@ -226,18 +224,15 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	// change also the code below to make it work by just using the name of your
 	// choice. If you use methods instead of constants, change == with the
 	// invocation of the corresponding method
-	
-		@Override
+	/**
+	 * This method define the representation of each element defining the following definitions
+	 * BOTTOM represents the BOTTOM element
+	 * TOP represents the TOP element
+	 * _ represents the CLEAN element
+	 * # represents the TAINT element
+	 */
+	@Override
 	public StructuredRepresentation representation() {
 		return this == BOTTOM ? Lattice.bottomRepresentation() : this == TOP ? Lattice.topRepresentation() : this == CLEAN ? new StringRepresentation("_") : new StringRepresentation("#");
-		/*
-		 * BOTTOM -> BOTTOM
-		 * TOP -> TOP
-		 * CLEAN -> _
-		 * TAINT -> #
-		 */
-	}
-		
-		
-	
+	}	
 }
