@@ -80,7 +80,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 
 	@Override
 	protected DefiniteTaint clean() {
-		return DefiniteTaint.TAINTED;
+		return DefiniteTaint.CLEAN;
 	}
 
 	@Override
