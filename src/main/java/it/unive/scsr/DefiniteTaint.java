@@ -5,7 +5,6 @@ import it.unive.lisa.analysis.Lattice;
 import it.unive.lisa.analysis.SemanticException;
 import it.unive.lisa.analysis.SemanticOracle;
 import it.unive.lisa.analysis.taint.BaseTaint;
-import it.unive.lisa.analysis.taint.ThreeLevelsTaint;
 import it.unive.lisa.program.cfg.ProgramPoint;
 import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
 import it.unive.lisa.util.representation.StringRepresentation;
@@ -78,11 +77,11 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 			ProgramPoint pp,
 			SemanticOracle oracle)
 			throws SemanticException {
-		String result = "CLEAN";
+		String result = CLEAN;
 		if (left.isAlwaysTainted() || right.isAlwaysTainted()) {
-			result = "TAINT";
+			result = TAINT;
 		} else if (left.isPossiblyTainted() || right.isPossiblyTainted()) {
-			result = "TOP";
+			result = TOP;
 		}
 		return new DefiniteTaint(result);
 	}
@@ -94,17 +93,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 		return new DefiniteTaint(TOP);
 	}
 
-
-	// IMPLEMENTATION NOTE:
-	// the code below is outside of the scope of the course. You can uncomment
-	// it to get your code to compile. Be aware that the code is written
-	// expecting that you have constants for identifying top, bottom, even and
-	// odd elements as we saw for the sign domain: if you name them differently,
-	// change also the code below to make it work by just using the name of your
-	// choice. If you use methods instead of constants, change == with the
-	// invocation of the corresponding method
-	
-		@Override
+	@Override
 	public StructuredRepresentation representation() {
 		// return this == BOTTOM ? Lattice.bottomRepresentation() : this == TOP ? Lattice.topRepresentation() : this == CLEAN ? new StringRepresentation("_") : new StringRepresentation("#");
 		switch(this.type) {
