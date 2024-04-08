@@ -3,10 +3,45 @@ package it.unive.scsr;
 /**
  * @author Patrick Fabbiani - 869936
  * @university Ca' Foscari University - Venice (Italy)
- * @version 1.2.1
- * This is a simulation of an abstract domain representing the complete Taint using LiSA Analyzer library
+ * @version 1.3.1
+ * This is a simulation of an abstract domain representing the complete, or definite, Taint using LiSA Analyzer library
  */
 
+/**
+ * The imports are from the it.unive.lisa package, which is part of the LISA framework. 
+ * LISA (Laboratory for Interdisciplinary Security Analysis) is a framework for static analysis of programs, 
+ * aimed at detecting security vulnerabilities and ensuring the correctness of software. 
+ * Here's a breakdown of each import:
+ * - import it.unive.lisa.analysis.Lattice;
+ * This import is for the Lattice class, which is a fundamental concept in abstract interpretation.
+ * - import it.unive.lisa.analysis.SemanticException;
+ * This import is for the SemanticException class, which is an exception that can be thrown during 
+ * the semantic analysis phase of the LISA framework. 
+ * - import it.unive.lisa.analysis.SemanticOracle;
+ * The SemanticOracle provides a way to query the semantics of a program, such as the types 
+ * of variables or the possible values of expressions.
+ * - import it.unive.lisa.analysis.taint.BaseTaint;
+ * The BaseTaint class likely represents a basic taint value, which can be used to mark data as tainted 
+ * (i.e., potentially unsafe or sensitive).
+ * - import it.unive.lisa.analysis.taint.ThreeLevelsTaint;
+ * The ThreeLevelsTaint class represents a more sophisticated taint model that categorizes data into 
+ * three levels of taint, possibly indicating the severity or type of potential security risk associated 
+ * with the data.
+ * - import it.unive.lisa.program.cfg.ProgramPoint;
+ * This import is for the ProgramPoint class, which represents a point in the control flow graph (CFG) of a program. 
+ * - import it.unive.lisa.symbolic.value.operator.AdditionOperator;
+ * - import it.unive.lisa.symbolic.value.operator.DivisionOperator;
+ * - import it.unive.lisa.symbolic.value.operator.MultiplicationOperator;
+ * - import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
+ * These classes are used to model the mathematical operations of two symbolic values.
+ * - import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
+ * This import is for the BinaryOperator class, which is a more general class for binary operations in symbolic analysis.
+ * - import it.unive.lisa.util.representation.StringRepresentation;
+ * The StringRepresentation class can be useful for debugging, logging, or displaying information about the analysis results.
+ * - import it.unive.lisa.util.representation.StructuredRepresentation;
+ * This class serves a similar purpose as StringRepresentation, but with a focus on structured representations, 
+ * possibly for more complex objects or data structures.
+ */
 import it.unive.lisa.analysis.Lattice;
 import it.unive.lisa.analysis.SemanticException;
 import it.unive.lisa.analysis.SemanticOracle;
