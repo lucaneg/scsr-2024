@@ -37,15 +37,13 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	
 	@Override
 	public DefiniteTaint lubAux(DefiniteTaint other) throws SemanticException {
-		/*if(this.isAlwaysTainted().isAlwaysClean())*/
-		
-		
+				
 		return TOP;
 	}
 
 	@Override
 	public boolean lessOrEqualAux(DefiniteTaint other) throws SemanticException {
-		// TODO: to implement
+		
 		return false;
 	}
 
@@ -95,21 +93,10 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 		if(left.isPossiblyTainted() || right.isPossiblyTainted())
 			return top();
 		
-		if(left.isBottom() || right.isBottom())
-			return bottom();
+		if(left.isAlwaysTainted() || right.isAlwaysTainted())
+			return TAINT;
 		
-		
-		if(operator instanceof AdditionOperator || operator instanceof SubtractionOperator || operator instanceof MultiplicationOperator)
-		{
-			
-			
-			if(left.isAlwaysTainted() || right.isAlwaysTainted())
-				return tainted();
-			
-			if(left.isAlwaysClean() && right.isAlwaysClean())
-				return clean();
-		}
-		return TOP;
+		return CLEAN;
 	}
 	
 	@Override
