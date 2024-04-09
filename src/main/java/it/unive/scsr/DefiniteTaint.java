@@ -139,6 +139,5 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
     return this == BOTTOM ? Lattice.bottomRepresentation() : this == TOP ? Lattice.topRepresentation() : this == CLEAN ? new StringRepresentation("_") : new StringRepresentation("#");
   }
     
-    
-  
+     
 }
