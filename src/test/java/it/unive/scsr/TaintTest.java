@@ -76,4 +76,35 @@ public class TaintTest {
                         cm.getDescriptor().getAnnotations().addAnnotation(Taint.CLEAN_ANNOTATION);
                     else if (isSink(cm))
                         for (Parameter param : cm.getDescriptor().getFormals()) {
-                            param.addAnnotation(Taint
+                            param.addAnnotation(TaintChecker.SINK_ANNOTATION);
+                        }
+                }
+            }
+        }
+    }
+
+    private boolean isSource(CodeMember cm) {
+        for (String signatureName : sources) {
+            if (cm.getDescriptor().getName().equals(signatureName))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isSanitizer(CodeMember cm) {
+        for (String signatureName : sanitizers) {
+            if (cm.getDescriptor().getName().equals(signatureName))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isSink(CodeMember cm) {
+        for (String signatureName : sinks) {
+            if (cm.getDescriptor().getName().equals(signatureName))
+                return true;
+        }
+        return false;
+    }
+}
+
