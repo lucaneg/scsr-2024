@@ -52,7 +52,7 @@ public class Parity implements BaseNonRelationalValueDomain<Parity> {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((parity == null) ? 0 : parity.hashCode());
+        result = prime * result + (parity == null ? 0 : parity.hashCode());
         return result;
     }
 
