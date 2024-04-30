@@ -143,6 +143,48 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
         return null;
     }
 
+	@Override
+	protected DefiniteTaint tainted() {
+		// TODO: to implement
+		return null;
+	}
+
+	@Override
+	protected DefiniteTaint clean() {
+		// TODO: to implement
+		return null;
+	}
+
+	@Override
+	public boolean isAlwaysTainted() {
+		// TODO: to implement
+		return false;
+	}
+
+	@Override
+	public boolean isPossiblyTainted() {
+		// TODO: to implement
+		return false;
+	}
+	
+	public DefiniteTaint evalBinaryExpression(
+			BinaryOperator operator,
+			DefiniteTaint left,
+			DefiniteTaint right,
+			ProgramPoint pp,
+			SemanticOracle oracle)
+			throws SemanticException {
+		// TODO: to implement
+		return null;
+	}
+	
+	@Override
+	public DefiniteTaint wideningAux(
+			DefiniteTaint other)
+			throws SemanticException {
+		// TODO: to implement
+		return null;
+	}
 
 
 }
