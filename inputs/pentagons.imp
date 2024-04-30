@@ -1,0 +1,24 @@
+class pentagons {
+
+	basic() {
+	
+		def arr = new int[5];
+		def i = 0;
+		
+		while(i < arraylen(arr)) {
+			arr[i] = i;
+			i = i + 1;
+		}
+	}
+	
+	arrayoutofbounds() {
+	
+		def arr = new int[5];
+		def i = 0;
+		
+		while(i <= arraylen(arr)) {
+			arr[i] = i; // out of bounds
+			i = i + 1;
+		}
+	}
+}
