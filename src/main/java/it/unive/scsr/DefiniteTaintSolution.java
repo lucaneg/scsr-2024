@@ -77,6 +77,9 @@ public class DefiniteTaintSolution extends BaseTaint<DefiniteTaintSolution>  {
 
 	@Override
 	public boolean isPossiblyTainted() {
+		/** less precise
+		 return this == TAINTED || this == TOP;
+		 */
 		return this == TOP;
 	}
 	
@@ -89,6 +92,7 @@ public class DefiniteTaintSolution extends BaseTaint<DefiniteTaintSolution>  {
 			SemanticOracle oracle)
 			throws SemanticException {
 		
+		/** less precise 
 		// both elements are tainted
 		if (left == TAINTED && right == TAINTED)
 			return TAINTED;
@@ -103,6 +107,15 @@ public class DefiniteTaintSolution extends BaseTaint<DefiniteTaintSolution>  {
 
 		// both elements are clean
 		return CLEAN;
+		**/
+		
+		if (left == TAINTED || right == TAINTED)
+			return TAINTED;
+
+		if (left == TOP || right == TOP)
+			return TOP;
+
+		return CLEAN;
 	}
 	
 	@Override
@@ -115,11 +128,22 @@ public class DefiniteTaintSolution extends BaseTaint<DefiniteTaintSolution>  {
 			SemanticOracle oracle)
 			throws SemanticException {
 		
+		/** less precise 
+		 
 		if (left == TAINTED && right == TAINTED && middle == TAINTED)
 			return TAINTED;
 		
 		if (left == TAINTED || right == TAINTED || middle == TAINTED)
 			return TOP;
+
+		if (left == TOP || right == TOP || middle == TOP)
+			return TOP;
+		
+		return CLEAN;
+		**/
+		
+		if (left == TAINTED || right == TAINTED || middle == TAINTED)
+			return TAINTED;
 
 		if (left == TOP || right == TOP || middle == TOP)
 			return TOP;
