@@ -51,11 +51,30 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
         return CLEAN;
     }
 
-    @Override
-    protected DefiniteTaint tainted() {
-        // Represents a definitely tainted value
-        return TAINTED;
-    }
+	@Override
+	public boolean isPossiblyTainted() {
+		// TODO: to implement
+		return false;
+	}
+	
+	public DefiniteTaint evalBinaryExpression(
+			BinaryOperator operator,
+			DefiniteTaint left,
+			DefiniteTaint right,
+			ProgramPoint pp,
+			SemanticOracle oracle)
+			throws SemanticException {
+		// TODO: to implement
+		return null;
+	}
+	
+	@Override
+	public DefiniteTaint wideningAux(
+			DefiniteTaint other)
+			throws SemanticException {
+		// TODO: to implement
+		return null;
+	}
 
     @Override
     protected DefiniteTaint clean() {
