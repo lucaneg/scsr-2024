@@ -22,15 +22,15 @@ import it.unive.lisa.program.cfg.statement.call.UnresolvedCall;
 import it.unive.lisa.symbolic.SymbolicExpression;
 import it.unive.lisa.symbolic.value.ValueExpression;
 import it.unive.lisa.util.StringUtilities;
-import it.unive.scsr.DefiniteTaint;
+import it.unive.scsr.DefiniteTaintSolution;
 import it.unive.lisa.analysis.types.InferredTypes;
 import it.unive.lisa.checks.semantic.CheckToolWithAnalysisResults;
 import it.unive.lisa.checks.semantic.SemanticCheck;
 import it.unive.lisa.program.annotations.Annotation;
 
-public class DefiniteTaintChecker implements
+public class DefiniteTaintSolutionChecker implements
 SemanticCheck<
-		SimpleAbstractState<PointBasedHeap, ValueEnvironment<DefiniteTaint>, TypeEnvironment<InferredTypes>>> {
+		SimpleAbstractState<PointBasedHeap, ValueEnvironment<DefiniteTaintSolution>, TypeEnvironment<InferredTypes>>> {
 	
 	/**
 	 * Sink annotation.
@@ -44,7 +44,7 @@ SemanticCheck<
 
 	@Override
 	public boolean visit(
-			CheckToolWithAnalysisResults<SimpleAbstractState<PointBasedHeap, ValueEnvironment<DefiniteTaint>, TypeEnvironment<InferredTypes>>> tool,
+			CheckToolWithAnalysisResults<SimpleAbstractState<PointBasedHeap, ValueEnvironment<DefiniteTaintSolution>, TypeEnvironment<InferredTypes>>> tool,
 			CFG graph, Statement node) {
 		
 		if (!(node instanceof UnresolvedCall))
@@ -52,7 +52,7 @@ SemanticCheck<
 		UnresolvedCall call = (UnresolvedCall) node;
 		try {
 			for (AnalyzedCFG<
-					SimpleAbstractState<PointBasedHeap, ValueEnvironment<DefiniteTaint>,
+					SimpleAbstractState<PointBasedHeap, ValueEnvironment<DefiniteTaintSolution>,
 							TypeEnvironment<InferredTypes>>> result : tool.getResultOf(call.getCFG())) {
 				
 				Call resolved = tool.getResolvedVersion(call, result);
@@ -66,7 +66,7 @@ SemanticCheck<
 						for (int i = 0; i < parameters.length; i++)
 							if (parameters[i].getAnnotations().contains(SINK_MATCHER)) {
 								AnalysisState<
-										SimpleAbstractState<PointBasedHeap, ValueEnvironment<DefiniteTaint>,
+										SimpleAbstractState<PointBasedHeap, ValueEnvironment<DefiniteTaintSolution>,
 												TypeEnvironment<InferredTypes>>> state = result
 														.getAnalysisStateAfter(call.getParameters()[i]);
 								Set<SymbolicExpression> reachableIds = new HashSet<>();
@@ -75,7 +75,7 @@ SemanticCheck<
 											.addAll(state.getState().reachableFrom(e, node, state.getState()).elements);
 
 								for (SymbolicExpression s : reachableIds) {
-									ValueEnvironment<DefiniteTaint> valueState = state.getState().getValueState();
+									ValueEnvironment<DefiniteTaintSolution> valueState = state.getState().getValueState();
 
 									if(valueState.eval((ValueExpression) s, node, state.getState()).isAlwaysTainted())
 										tool.warnOn(call, "[DEFINITE] The value passed for the " + StringUtilities.ordinal(i + 1)
