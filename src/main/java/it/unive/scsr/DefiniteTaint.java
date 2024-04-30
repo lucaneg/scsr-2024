@@ -68,15 +68,15 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 		return this==TOP;
 	}
 	
-	public DefiniteTaint evalBinaryExpression(BinaryOperator operator,DefiniteTaint left,DefiniteTaint right,ProgramPoint pp,SemanticOracle oracle)throws SemanticException {
-		if (left == TAINTED || right == TAINTED){
-			return tainted();
-		}
-
-		if (left == TOP || right == TOP){
-			return top();
-		}
-		return clean();
+	public DefiniteTaint evalBinaryExpression(
+			BinaryOperator operator,
+			DefiniteTaint left,
+			DefiniteTaint right,
+			ProgramPoint pp,
+			SemanticOracle oracle)
+			throws SemanticException {
+		// TODO: to implement
+		return null;
 	}
 	
 	@Override
