@@ -5,7 +5,6 @@ import it.unive.lisa.analysis.Lattice;
 import it.unive.lisa.analysis.SemanticException;
 import it.unive.lisa.analysis.SemanticOracle;
 import it.unive.lisa.analysis.taint.BaseTaint;
-import it.unive.lisa.analysis.taint.ThreeLevelsTaint;
 import it.unive.lisa.program.cfg.ProgramPoint;
 import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
 import it.unive.lisa.util.representation.StringRepresentation;
@@ -73,8 +72,8 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	
 	public DefiniteTaint evalBinaryExpression(
 			BinaryOperator operator,
-			DefiniteTaint left,		// ThreeLevelsTaint -> DefiniteTaint
-			DefiniteTaint right,	// ThreeLevelsTaint -> DefiniteTaint
+			DefiniteTaint left,
+			DefiniteTaint right,
 			ProgramPoint pp,
 			SemanticOracle oracle)
 			throws SemanticException {
