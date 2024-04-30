@@ -5,7 +5,6 @@ import it.unive.lisa.analysis.Lattice;
 import it.unive.lisa.analysis.SemanticException;
 import it.unive.lisa.analysis.SemanticOracle;
 import it.unive.lisa.analysis.taint.BaseTaint;
-import it.unive.lisa.analysis.taint.ThreeLevelsTaint;
 import it.unive.lisa.program.cfg.ProgramPoint;
 import it.unive.lisa.symbolic.value.operator.binary.BinaryOperator;
 import it.unive.lisa.util.representation.StringRepresentation;
@@ -71,17 +70,15 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 		return this == TOP;
 	}
 	
-	public DefiniteTaint evalBinaryExpression( BinaryOperator operator, ThreeLevelsTaint left, ThreeLevelsTaint right, ProgramPoint pp, SemanticOracle oracle) throws SemanticException {
-	
-		// if at least one component of the expression is tainted the result will be too
-		if (left.isAlwaysTainted() || right.isAlwaysTainted())
-			return DefiniteTaint.TAINTED;
-
-		// if we are not sure of the taint state of the components the result will be TOP
-		if (left.isPossiblyTainted() || right.isPossiblyTainted())
-			return DefiniteTaint.TOP;
-
-		return DefiniteTaint.CLEAN;
+	public DefiniteTaint evalBinaryExpression(
+			BinaryOperator operator,
+			DefiniteTaint left,
+			DefiniteTaint right,
+			ProgramPoint pp,
+			SemanticOracle oracle)
+			throws SemanticException {
+		// TODO: to implement
+		return null;
 	}
 	
 	@Override
