@@ -5,7 +5,6 @@ import it.unive.lisa.analysis.Lattice;
 import it.unive.lisa.analysis.SemanticException;
 import it.unive.lisa.analysis.SemanticOracle;
 import it.unive.lisa.analysis.taint.BaseTaint;
-import it.unive.lisa.analysis.taint.ThreeLevelsTaint;
 import it.unive.lisa.program.cfg.ProgramPoint;
 import it.unive.lisa.symbolic.value.operator.AdditionOperator;
 import it.unive.lisa.symbolic.value.operator.SubtractionOperator;
@@ -80,13 +79,30 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
     return CLEAN;
   }
 
-  @Override
-  public boolean isAlwaysTainted() {
-    if( this== TAINT)
-      return true;
-    else
-      return false;
-  }
+	@Override
+	public boolean isPossiblyTainted() {
+		// TODO: to implement
+		return false;
+	}
+	
+	public DefiniteTaint evalBinaryExpression(
+			BinaryOperator operator,
+			DefiniteTaint left,
+			DefiniteTaint right,
+			ProgramPoint pp,
+			SemanticOracle oracle)
+			throws SemanticException {
+		// TODO: to implement
+		return null;
+	}
+	
+	@Override
+	public DefiniteTaint wideningAux(
+			DefiniteTaint other)
+			throws SemanticException {
+		// TODO: to implement
+		return null;
+	}
 
   @Override
   public boolean isPossiblyTainted() {
