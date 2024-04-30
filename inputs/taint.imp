@@ -1,0 +1,50 @@
+class taint {
+
+	source1(){
+		return -99;
+	}
+
+	sanitizer1(v){
+		return 0;
+	}
+
+
+	sink1(v){
+	}
+
+
+	basic1() {
+		def c = 0;
+
+		this.sink1(c);  // the value is clean
+	}
+
+	basic2() {
+		def t = this.source1();
+
+		this.sink1(t); // a tainted value flows in a sink!
+	}
+
+	basic3() {
+		def t = this.source1();
+
+		def s = this.sanitizer1(t);
+
+		this.sink1(s);  // the value is clean due to sanitization
+	}
+
+	branch(b) {
+		def m = 0;
+
+		if(b) {
+			m = this.source1();
+		} else {
+		  m = 5;
+		}
+
+		this.sink1(m); // the value may be tainted
+	}
+
+
+
+}
