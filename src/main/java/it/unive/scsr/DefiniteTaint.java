@@ -18,7 +18,66 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
     private static final DefiniteTaint TAINT = new DefiniteTaint(3);
     private static final DefiniteTaint BOTTOM = new DefiniteTaint(0);
 
-    int value;
+	@Override
+	public boolean lessOrEqualAux(DefiniteTaint other) throws SemanticException {
+		// TODO: to implement
+		return false;
+	}
+
+	@Override
+	public DefiniteTaint top() {
+		// TODO: to implement
+		return null;
+	}
+
+	@Override
+	public DefiniteTaint bottom() {
+		// TODO: to implement
+		return null;
+	}
+
+	@Override
+	protected DefiniteTaint tainted() {
+		// TODO: to implement
+		return null;
+	}
+
+	@Override
+	protected DefiniteTaint clean() {
+		// TODO: to implement
+		return null;
+	}
+
+	@Override
+	public boolean isAlwaysTainted() {
+		// TODO: to implement
+		return false;
+	}
+
+	@Override
+	public boolean isPossiblyTainted() {
+		// TODO: to implement
+		return false;
+	}
+	
+	public DefiniteTaint evalBinaryExpression(
+			BinaryOperator operator,
+			DefiniteTaint left,
+			DefiniteTaint right,
+			ProgramPoint pp,
+			SemanticOracle oracle)
+			throws SemanticException {
+		// TODO: to implement
+		return null;
+	}
+	
+	@Override
+	public DefiniteTaint wideningAux(
+			DefiniteTaint other)
+			throws SemanticException {
+		// TODO: to implement
+		return null;
+	}
 
 
     public DefiniteTaint() {
