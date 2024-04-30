@@ -37,7 +37,11 @@ public class ParityTaskEvaluation {
 		conf.analysisGraphs = GraphType.HTML;
 		conf.abstractState = DefaultConfiguration.simpleState(
 				DefaultConfiguration.defaultHeapDomain(),
+<<<<<<< HEAD
 				new ValueEnvironment<>(new Parity(Parity.top)),
+=======
+				new ValueEnvironment<>(new ParitySolution()),
+>>>>>>> b826105a5fccc481dd2fa3a836c6faa135a2981e
 				DefaultConfiguration.defaultTypeDomain());
 
 		try {
