@@ -31,17 +31,13 @@ public class ParityTaskEvaluation {
 	public void testParity() throws ParsingException, AnalysisException {
 		Program program = IMPFrontend.processFile("inputs/parity-eval.imp");
 		LiSAConfiguration conf = new DefaultConfiguration();
-		conf.workdir = "outputs/parity-eval2";
+		conf.workdir = "outputs/parity-eval";
 		conf.serializeResults = true;
 		conf.jsonOutput = true;
 		conf.analysisGraphs = GraphType.HTML;
 		conf.abstractState = DefaultConfiguration.simpleState(
 				DefaultConfiguration.defaultHeapDomain(),
-<<<<<<< HEAD
-				new ValueEnvironment<>(new Parity(Parity.top)),
-=======
 				new ValueEnvironment<>(new ParitySolution()),
->>>>>>> b826105a5fccc481dd2fa3a836c6faa135a2981e
 				DefaultConfiguration.defaultTypeDomain());
 
 		try {

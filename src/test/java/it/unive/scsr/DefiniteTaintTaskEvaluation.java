@@ -21,14 +21,14 @@ import it.unive.scsr.checkers.DefiniteTaintChecker;
 import it.unive.scsr.checkers.DefiniteTaintSolutionChecker;
 
 public class DefiniteTaintTaskEvaluation {
-	
-	
-	
+
+
+
 	// we define the signatures for matching sources, sanitizers, and sinks
 	String[] sources = new String[] {"source1", "source2"};
 	String[] sanitizers = new String[] {"sanitizer1", "sanitizer2"};
 	String[] sinks = new String[] {"sink1", "sinks"};
-	
+
 
 	@Test
 	public void testDefiniteTaint() throws ParsingException, AnalysisException {
@@ -37,7 +37,7 @@ public class DefiniteTaintTaskEvaluation {
 
 		// we load annotation for identify sources, sanitizer, and sinks during the analysis and checker execution
 		loadAnnotations(program);
-		
+
 		// we build a new configuration for the analysis
 		LiSAConfiguration conf = new DefaultConfiguration();
 
@@ -46,26 +46,26 @@ public class DefiniteTaintTaskEvaluation {
 
 		// we specify the visual format of the analysis results
 		conf.analysisGraphs = GraphType.HTML;
-		
+
 		// we specify the create a json file containing warnings triggered by the analysis
 		conf.jsonOutput= true;
 
 		// we specify the analysis that we want to execute
-		
-		 conf.abstractState = DefaultConfiguration.simpleState(
+
+		conf.abstractState = DefaultConfiguration.simpleState(
 				DefaultConfiguration.defaultHeapDomain(),
 				new ValueEnvironment<>(new DefiniteTaint()),
 				DefaultConfiguration.defaultTypeDomain());
-		 
-		 // we specify to perform an interprocedural analysis (require to recognize calls to sources, sanitizers, and sinks)
-		 conf.interproceduralAnalysis = new ContextBasedAnalysis<>(FullStackToken.getSingleton());
-		 
-		 // the TaintChecker is executed after the taint analysis and it checks if a tainted value is flowed in a sink
-		 conf.semanticChecks.add(new DefiniteTaintChecker());
-		 
+
+		// we specify to perform an interprocedural analysis (require to recognize calls to sources, sanitizers, and sinks)
+		conf.interproceduralAnalysis = new ContextBasedAnalysis<>(FullStackToken.getSingleton());
+
+		// the TaintChecker is executed after the taint analysis and it checks if a tainted value is flowed in a sink
+		conf.semanticChecks.add(new DefiniteTaintChecker());
+
 		// we instantiate LiSA with our configuration
 		LiSA lisa = new LiSA(conf);
-		
+
 
 		// finally, we tell LiSA to analyze the program
 		lisa.run(program);
@@ -73,23 +73,23 @@ public class DefiniteTaintTaskEvaluation {
 
 
 	private void loadAnnotations(Program program) {
-		
+
 		for(Unit unit : program.getUnits()) {
 			if(unit instanceof ClassUnit) {
 				ClassUnit cunit = (ClassUnit) unit;
 				for(CodeMember cm : cunit.getInstanceCodeMembers(false)) {
 					if(isSource(cm))
 						cm.getDescriptor().getAnnotations().addAnnotation(DefiniteTaintSolution.TAINTED_ANNOTATION);
-					else if(isSanitizer(cm)) 
+					else if(isSanitizer(cm))
 						cm.getDescriptor().getAnnotations().addAnnotation(DefiniteTaintSolution.CLEAN_ANNOTATION);
 					else if(isSink(cm))
 						for(Parameter param : cm.getDescriptor().getFormals()) {
 							param.addAnnotation(DefiniteTaintChecker.SINK_ANNOTATION);
-						}		
-				}	
+						}
+				}
 			}
 		}
-		
+
 	}
 
 
@@ -100,7 +100,7 @@ public class DefiniteTaintTaskEvaluation {
 		}
 		return false;
 	}
-	
+
 
 	private boolean isSanitizer(CodeMember cm) {
 		for(String signatureName : sanitizers) {
@@ -109,7 +109,7 @@ public class DefiniteTaintTaskEvaluation {
 		}
 		return false;
 	}
-	
+
 
 	private boolean isSink(CodeMember cm) {
 		for(String signatureName : sinks) {
@@ -118,5 +118,5 @@ public class DefiniteTaintTaskEvaluation {
 		}
 		return false;
 	}
-	
+
 }
