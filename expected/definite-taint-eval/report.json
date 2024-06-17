@@ -8,29 +8,29 @@
   }, {
     "message" : "['inputs/definite-taint-eval.imp':33:14] on 'untyped taint::basic3(taint* this)': [EXPRESSION] [POSSIBLE] The value passed for the 1st parameter of this call may be tainted, and it reaches the sink at parameter 'this' of sink1"
   }, {
-    "message" : "['inputs/definite-taint-eval.imp':40:15] on 'untyped taint::basic4(taint* this)': [EXPRESSION] [POSSIBLE] The value passed for the 1st parameter of this call may be tainted, and it reaches the sink at parameter 'this' of sink1"
+    "message" : "['inputs/definite-taint-eval.imp':40:15] on 'untyped taint::basic4(taint* this)': [EXPRESSION] [DEFINITE] The value passed for the 2nd parameter of this call is always tainted, and it reaches the sink at parameter 'v' of sink1"
   }, {
-    "message" : "['inputs/definite-taint-eval.imp':40:15] on 'untyped taint::basic4(taint* this)': [EXPRESSION] [POSSIBLE] The value passed for the 2nd parameter of this call may be tainted, and it reaches the sink at parameter 'v' of sink1"
+    "message" : "['inputs/definite-taint-eval.imp':40:15] on 'untyped taint::basic4(taint* this)': [EXPRESSION] [POSSIBLE] The value passed for the 1st parameter of this call may be tainted, and it reaches the sink at parameter 'this' of sink1"
   }, {
     "message" : "['inputs/definite-taint-eval.imp':52:14] on 'untyped taint::branch(taint* this, untyped b)': [EXPRESSION] [POSSIBLE] The value passed for the 1st parameter of this call may be tainted, and it reaches the sink at parameter 'this' of sink1"
   }, {
     "message" : "['inputs/definite-taint-eval.imp':52:14] on 'untyped taint::branch(taint* this, untyped b)': [EXPRESSION] [POSSIBLE] The value passed for the 2nd parameter of this call may be tainted, and it reaches the sink at parameter 'v' of sink1"
   }, {
-    "message" : "['inputs/definite-taint-eval.imp':67:14] on 'untyped taint::branch2(taint* this, untyped b)': [EXPRESSION] [POSSIBLE] The value passed for the 1st parameter of this call may be tainted, and it reaches the sink at parameter 'this' of sink1"
+    "message" : "['inputs/definite-taint-eval.imp':67:14] on 'untyped taint::branch2(taint* this, untyped b)': [EXPRESSION] [DEFINITE] The value passed for the 2nd parameter of this call is always tainted, and it reaches the sink at parameter 'v' of sink1"
   }, {
-    "message" : "['inputs/definite-taint-eval.imp':67:14] on 'untyped taint::branch2(taint* this, untyped b)': [EXPRESSION] [POSSIBLE] The value passed for the 2nd parameter of this call may be tainted, and it reaches the sink at parameter 'v' of sink1"
+    "message" : "['inputs/definite-taint-eval.imp':67:14] on 'untyped taint::branch2(taint* this, untyped b)': [EXPRESSION] [POSSIBLE] The value passed for the 1st parameter of this call may be tainted, and it reaches the sink at parameter 'this' of sink1"
   } ],
   "files" : [ "js/cytoscape-3.21.1.min.js", "js/cytoscape-graphml-1.0.6-hier.js", "js/jquery-3.0.0.min.js", "report.json", "untyped_taint.basic1(taint__this).html", "untyped_taint.basic2(taint__this).html", "untyped_taint.basic3(taint__this).html", "untyped_taint.basic4(taint__this).html", "untyped_taint.branch(taint__this,_untyped_b).html", "untyped_taint.branch2(taint__this,_untyped_b).html", "untyped_taint.sanitizer1(taint__this,_untyped_v).html", "untyped_taint.sanitizer1(taint__this,_untyped_v)_550394102.html", "untyped_taint.sink1(taint__this,_untyped_v).html", "untyped_taint.sink1(taint__this,_untyped_v)_550381237.html", "untyped_taint.sink1(taint__this,_untyped_v)_550381423.html", "untyped_taint.sink1(taint__this,_untyped_v)_550381671.html", "untyped_taint.sink1(taint__this,_untyped_v)_550382260.html", "untyped_taint.sink1(taint__this,_untyped_v)_550382725.html", "untyped_taint.sink1(taint__this,_untyped_v)_550382849.html", "untyped_taint.source1(taint__this).html", "untyped_taint.source1(taint__this)_550387871.html", "untyped_taint.source1(taint__this)_550388274.html", "untyped_taint.source1(taint__this)_550390010.html", "untyped_taint.source1(taint__this)_550390196.html", "untyped_taint.source1(taint__this)_550391095.html", "untyped_taint.source1(taint__this)_550391405.html" ],
   "info" : {
     "cfgs" : "9",
-    "duration" : "420ms",
-    "end" : "2024-04-30T09:54:14.719+02:00",
+    "duration" : "152ms",
+    "end" : "2024-04-30T14:45:48.785+02:00",
     "expressions" : "56",
     "files" : "25",
     "globals" : "0",
     "members" : "9",
     "programs" : "1",
-    "start" : "2024-04-30T09:54:14.299+02:00",
+    "start" : "2024-04-30T14:45:48.633+02:00",
     "statements" : "32",
     "units" : "1",
     "version" : "0.1b9",
@@ -53,6 +53,6 @@
     "syntacticChecks" : "",
     "useWideningPoints" : "true",
     "wideningThreshold" : "5",
-    "workdir" : "outputs/definite-taint"
+    "workdir" : "outputs/definite-taint-eval"
   }
 }
