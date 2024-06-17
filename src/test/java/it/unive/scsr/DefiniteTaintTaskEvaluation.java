@@ -54,14 +54,14 @@ public class DefiniteTaintTaskEvaluation {
 		
 		 conf.abstractState = DefaultConfiguration.simpleState(
 				DefaultConfiguration.defaultHeapDomain(),
-				new ValueEnvironment<>(new DefiniteTaint()),
+				new ValueEnvironment<>(new DefiniteTaintSolution()),
 				DefaultConfiguration.defaultTypeDomain());
 		 
 		 // we specify to perform an interprocedural analysis (require to recognize calls to sources, sanitizers, and sinks)
 		 conf.interproceduralAnalysis = new ContextBasedAnalysis<>(FullStackToken.getSingleton());
 		 
 		 // the TaintChecker is executed after the taint analysis and it checks if a tainted value is flowed in a sink
-		 conf.semanticChecks.add(new DefiniteTaintChecker());
+		 conf.semanticChecks.add(new DefiniteTaintSolutionChecker());
 		 
 		// we instantiate LiSA with our configuration
 		LiSA lisa = new LiSA(conf);
