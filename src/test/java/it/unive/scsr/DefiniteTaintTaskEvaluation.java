@@ -54,7 +54,7 @@ public class DefiniteTaintTaskEvaluation {
 		
 		 conf.abstractState = DefaultConfiguration.simpleState(
 				DefaultConfiguration.defaultHeapDomain(),
-				new ValueEnvironment<>(new DefiniteTaintSolution()),
+				new ValueEnvironment<>(new DefiniteTaint()),
 				DefaultConfiguration.defaultTypeDomain());
 		 
 		 // we specify to perform an interprocedural analysis (require to recognize calls to sources, sanitizers, and sinks)

@@ -60,7 +60,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 		// TODO: to implement
 		return false;
 	}
-	
+
 	public DefiniteTaint evalBinaryExpression(
 			BinaryOperator operator,
 			DefiniteTaint left,
@@ -71,7 +71,7 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 		// TODO: to implement
 		return null;
 	}
-	
+
 	@Override
 	public DefiniteTaint wideningAux(
 			DefiniteTaint other)
@@ -89,13 +89,13 @@ public class DefiniteTaint extends BaseTaint<DefiniteTaint>  {
 	// change also the code below to make it work by just using the name of your
 	// choice. If you use methods instead of constants, change == with the
 	// invocation of the corresponding method
-	
-		@Override
+
+	@Override
 	public StructuredRepresentation representation() {
 		// return this == BOTTOM ? Lattice.bottomRepresentation() : this == TOP ? Lattice.topRepresentation() : this == CLEAN ? new StringRepresentation("_") : new StringRepresentation("#");
 		return null;
 	}
-		
-		
-	
+
+
+
 }
