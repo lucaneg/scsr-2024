@@ -108,8 +108,8 @@ public class Intervals
 		MathNumber interval1High = this.interval.getHigh();
 		MathNumber interval2High = other.interval.getHigh();
 		
-		MathNumber minLow = interval1Low.min(interval2Low);
-		MathNumber maxHigh = interval1High.max(interval2High);
+		MathNumber minLow = interval1Low.max(interval2Low);
+		MathNumber maxHigh = interval1High.min(interval2High);
 		
 		Intervals newInterval = new Intervals(minLow, maxHigh);
 		
@@ -125,8 +125,8 @@ public class Intervals
 		MathNumber interval1High = this.interval.getHigh();
 		MathNumber interval2High = other.interval.getHigh();
 		
-		MathNumber maxLow = interval1Low.max(interval2Low);
-		MathNumber minHigh = interval1High.min(interval2High);
+		MathNumber maxLow = interval1Low.min(interval2Low);
+		MathNumber minHigh = interval1High.max(interval2High);
 		
 		Intervals newInterval = new Intervals(maxLow, minHigh);
 		return maxLow.isMinusInfinity() && minHigh.isPlusInfinity() ? top() :
